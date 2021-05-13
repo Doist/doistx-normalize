@@ -34,19 +34,14 @@ kotlin {
     ios()
     macosX64()
     mingwX64()
+    linuxX64 {
+        val main by compilations.getting
+        val interop by main.cinterops.creating {
+            defFile = project.file("src/linuxX64Interop/cinterop/uninorm.def")
+        }
 
-    val linuxHost = System.getProperty("os.name") == "Linux"
-    if (linuxHost) {
-        // Disable cross-compilation for Linux, akin to macOS and Windows.
-        linuxX64 {
-            val main by compilations.getting
-            val interop by main.cinterops.creating {
-                defFile = project.file("src/linuxX64Interop/cinterop/uninorm.def")
-            }
-
-            binaries {
-                executable()
-            }
+        binaries {
+            executable()
         }
     }
 
@@ -83,8 +78,6 @@ kotlin {
             dependsOn(nativeDarwinMain)
         }
         val mingwX64Main by getting
-        if (linuxHost) {
-            val linuxX64Main by getting
-        }
+        val linuxX64Main by getting
     }
 }
