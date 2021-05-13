@@ -84,13 +84,16 @@ kotlin {
     }
 }
 
+// Generate stubs before compiling for Linux.
 tasks.findByName("compileKotlinLinuxX64")?.mustRunAfter("cinteropInteropLinuxX64")
 
+// Split tests in CI: Apple-specific targets on macOS, Windows-specific targets on Windows,
+// and everything else on Linux.
 tasks.register("ciTest") {
     val os = DefaultNativePlatform.getCurrentOperatingSystem()
     when {
         os.isLinux -> dependsOn("jvmTest", "jsTest", "linuxX64Test")
-        os.isMacOsX -> dependsOn("iosX64Test", "macosX64Test")
+        os.isMacOsX -> dependsOn("iosArm64Test", "iosX64Test", "macosX64Test")
         os.isWindows -> dependsOn("mingwX64Test")
     }
 }
