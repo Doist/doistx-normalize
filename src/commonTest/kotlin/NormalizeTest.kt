@@ -42,7 +42,6 @@ class NormalizeTest {
         }
     }
 
-
     @Test
     fun testNormalize() {
         val fixtures = arrayOf(
