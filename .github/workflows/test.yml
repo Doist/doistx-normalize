@@ -21,5 +21,5 @@ jobs:
           distribution: 'adopt'
       - run: sudo apt-get install libunistring-dev
         if: runner.os == 'Linux'
-      - run: ./gradlew ciTest
+      - run: ./gradlew ciTests
         shell: bash

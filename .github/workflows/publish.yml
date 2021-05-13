@@ -19,7 +19,7 @@ jobs:
           distribution: 'adopt'
       - run: sudo apt-get install libunistring-dev
         if: runner.os == 'Linux'
-      - run: ./gradlew ciTest publish -PpublishCommonTargets=$PUBLISH_COMMON_TARGETS
+      - run: ./gradlew ciTests publish -PpublishCommonTargets=$PUBLISH_COMMON_TARGETS
         env:
           PUBLISH_COMMON_TARGETS: ${{ runner.os == 'Linux' }}
           SONATYPE_NEXUS_USERNAME: ${{ secrets.SONATYPE_NEXUS_USERNAME }}

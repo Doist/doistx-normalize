@@ -144,7 +144,8 @@ tasks.matching { it.name.contains("linux", true) }.configureEach { onlyIf { os.i
 
 // Split tests in CI.
 // Apple-specific targets on macOS, Windows-specific targets on Windows, everything else on Linux.
-tasks.register("ciTest") {
+tasks.register("ciTests") {
+    group = "verification"
     when {
         os.isLinux -> dependsOn(
             tasks.matching { it.name.matches(Regex("!(ios|macos|mingw).*Test")) }.map { it.name })
