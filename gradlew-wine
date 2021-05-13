@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+#
+# Use this to build and/or test Windows targets on a Unix system.
+#
+# Before using this, you need to:
+# 1. Install Wine.
+# 2. Install JDK under Wine.
+#
+# You *might* also need to:
+# 1. Specify the path to JAVA_HOME, e.g.:
+#    $ JAVA_HOME=~/.wine/drive_c/Program\ Files/Java/jdk1.8.0_291/ ./gradlew-wine clean windowsTest
+#    Do this if instructed by the console output.
+# 2. Change the Z: drive under winecfg, using `/home/USERNAME` instead of `/`.
+#    Do this if you run into issues with file system permissions.
+#
+WINEDEBUG=-all wine cmd /c gradlew.bat $*
