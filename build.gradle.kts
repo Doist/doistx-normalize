@@ -1,3 +1,5 @@
+import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
+
 plugins {
     kotlin("multiplatform") version "1.5.0"
 }
@@ -79,5 +81,16 @@ kotlin {
         }
         val mingwX64Main by getting
         val linuxX64Main by getting
+    }
+}
+
+tasks.findByName("compileKotlinLinuxX64")?.mustRunAfter("cinteropInteropLinuxX64")
+
+tasks.register("ciTest") {
+    val os = DefaultNativePlatform.getCurrentOperatingSystem()
+    when {
+        os.isLinux -> dependsOn("jvmTest", "jsTest", "linuxX64Test")
+        os.isMacOsX -> dependsOn("iosX64Test", "macosX64Test")
+        os.isWindows -> dependsOn("mingwX64Test")
     }
 }
