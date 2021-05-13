@@ -148,10 +148,10 @@ tasks.register("ciTests") {
     group = "verification"
     when {
         os.isLinux -> dependsOn(
-            tasks.matching { it.name.matches(Regex("!(ios|macos|mingw).*Test")) }.map { it.name })
+            tasks.matching { it.name.matches(Regex("^(?!ios|macos|mingw).*Test$")) }.map { it.name })
         os.isMacOsX -> dependsOn(
-            tasks.matching { it.name.matches(Regex("(ios|macos).*Test")) }.map { it.name })
+            tasks.matching { it.name.matches(Regex("^(ios|macos).*Test$")) }.map { it.name })
         os.isWindows -> dependsOn(
-            tasks.matching { it.name.matches(Regex("(mingw).*Test")) }.map { it.name })
+            tasks.matching { it.name.matches(Regex("^(mingw).*Test$")) }.map { it.name })
     }
 }
