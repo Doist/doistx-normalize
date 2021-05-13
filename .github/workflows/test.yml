@@ -19,7 +19,6 @@ jobs:
         with:
           java-version: '8'
           distribution: 'adopt'
-      - uses: gradle/wrapper-validation-action@v1
       - if: runner.os == 'Linux'
         run: sudo apt-get install libunistring-dev
       - run: ./gradlew ciTest
