@@ -1,4 +1,4 @@
-# Install libunistring-devel, and generate with:
+# Install libunistring-dev, and generate with:
 # $ ./gradlew cinteropInteropLinuxX64
 # OR
 # $ cinterop -def uninorm.def
