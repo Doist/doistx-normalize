@@ -55,7 +55,6 @@ publishing {
     // Configure all publications.
     @Suppress("LocalVariableName")
     publications.withType<MavenPublication> {
-        val GROUP: String by project
         val POM_DESCRIPTION: String by project
         val POM_URL: String by project
         val POM_LICENSE_NAME: String by project
@@ -66,9 +65,9 @@ publishing {
         val POM_DEVELOPER_ID: String by project
         val POM_DEVELOPER_NAME: String by project
 
-        groupId = GROUP
+        groupId = project.group.toString()
         artifactId = rootProject.name
-        version = System.getenv("PUBLISH_VERSION") ?: "SNAPSHOT"
+        version = project.version.toString()
 
         // Stub javadoc.jar artifact.
         artifact(javadocJar.get())
