@@ -1,63 +1,9 @@
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
-
-val os = DefaultNativePlatform.getCurrentOperatingSystem()
+import org.gradle.nativeplatform.platform.internal.DefaultOperatingSystem
 
 plugins {
     kotlin("multiplatform") version "1.5.0"
-    id("maven-publish")
-}
-
-group = "com.doist.x.normalize"
-version = "1.0.0-SNAPSHOT"
-
-publishing {
-    repositories {
-        maven {
-            name = "sonatype"
-            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials {
-                username = System.getenv("SONATYPE_NEXUS_USERNAME")
-                password = System.getenv("SONATYPE_NEXUS_PASSWORD")
-            }
-        }
-    }
-
-    publications {
-        withType<MavenPublication> {
-            pom {
-                name.set("doistx-normalize")
-                description.set("KMP library for string normalization ")
-                url.set("https://github.com/Doist/doistx-normalize")
-
-                licenses {
-                    license {
-                        name.set("MIT")
-                        url.set("https://opensource.org/licenses/MIT")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("goncalo")
-                        name.set("Gonçalo Silva")
-                        email.set("goncalo@doist.com")
-                    }
-                }
-                scm {
-                    url.set("https://github.com/Doist/doistx-normalize")
-                }
-            }
-        }
-
-        // Publish common targets from the main host only.
-        // Set the `publishCommonTargets` project property, e.g., via `-PpublishCommonTargets=true`.
-        // See: https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties
-        val commonPublications = arrayOf("jvm", "js", "kotlinMultiplatform")
-        matching { it.name in commonPublications }.all {
-            tasks.withType<AbstractPublishToMaven>()
-                .matching { it.publication == this@all }
-                .configureEach { onlyIf { findProperty("publishCommonTargets") == "true" } }
-        }
-    }
+    id("publish")
 }
 
 repositories {
@@ -140,6 +86,7 @@ kotlin {
 tasks.findByName("compileKotlinLinuxX64")?.mustRunAfter("cinteropInteropLinuxX64")
 
 // Disable cross-compilation/publication of the Linux target.
+val os: DefaultOperatingSystem = DefaultNativePlatform.getCurrentOperatingSystem()
 tasks.matching { it.name.contains("linux", true) }.configureEach { onlyIf { os.isLinux } }
 
 // Split tests in CI.
@@ -154,4 +101,14 @@ tasks.register("ciTests") {
         os.isWindows -> dependsOn(
             tasks.matching { it.name.matches(Regex("^(mingw).*Test$")) }.map { it.name })
     }
+}
+
+// Publish common targets from the main host only.
+// Set the `publishCommonTargets` project property, e.g., via `-PpublishCommonTargets=true`.
+// See: https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties
+val commonPublications = arrayOf("jvm", "js", "kotlinMultiplatform")
+publishing.publications.matching { commonPublications.contains(it.name) }.all {
+    tasks.withType<AbstractPublishToMaven>()
+        .matching { it.publication == this@all }
+        .configureEach { onlyIf { findProperty("publishCommonTargets") == "true" } }
 }

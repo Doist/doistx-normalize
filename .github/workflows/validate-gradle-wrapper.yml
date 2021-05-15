@@ -1,4 +1,4 @@
-name: Validate Gradle Wrapper
+name: Validate gradle wrapper
 
 on:
   push:

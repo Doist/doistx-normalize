@@ -1,0 +1,6 @@
+# Copy to publish.properties and fill the values appropriately.
+signing.keyId=
+signing.password=
+signing.secretKeyRingFile=
+ossrh.username=
+ossrh.password=
