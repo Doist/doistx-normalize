@@ -19,9 +19,20 @@ jobs:
         with:
           java-version: '8'
           distribution: 'adopt'
-      - run: sudo apt-get install libunistring-dev
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/buildSrc/**/*.kt') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - run: |
+          sudo apt-get install libunistring-dev
         if: runner.os == 'Linux'
-      - run: ./gradlew ciTests
+      - run: |
+          ./gradlew ciTests
+          ./gradlew --stop
         shell: bash
 
   publish:
@@ -37,14 +48,26 @@ jobs:
         with:
           java-version: '8'
           distribution: 'adopt'
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/buildSrc/**/*.kt') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
       - id: get_tag_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
+        run: |
+          echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
         shell: bash
       - run: sudo apt-get install libunistring-dev
         if: runner.os == 'Linux'
-      - run: ./gradlew ciCompile
+      - run: |
+          ./gradlew ciCompile
         shell: bash
-      - run: ./gradlew publishAllPublicationsToSonatypeRepository -PpublishCommonTargets=$PUBLISH_COMMON_TARGETS --max-workers 1 closeAndReleaseSonatypeStagingRepository
+      - run: |
+          ./gradlew publishAllPublicationsToSonatypeRepository -PpublishCommonTargets=$PUBLISH_COMMON_TARGETS --max-workers 1 closeAndReleaseSonatypeStagingRepository
+          ./gradlew --stop
         env:
           PUBLISH_VERSION: ${{ steps.get_tag_version.outputs.VERSION }}
           PUBLISH_COMMON_TARGETS: ${{ runner.os == 'Linux' }}
