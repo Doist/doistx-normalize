@@ -1,13 +1,13 @@
 # doistx.normalize
 
-![badge][badge-android]
-![badge][badge-jvm]
-![badge][badge-js]
-![badge][badge-ios]
-![badge][badge-mac]
-![badge][badge-windows]
-![badge][badge-linux]
 ![badge-version][badge-version]
+![badge-android][badge-android]
+![badge-jvm][badge-jvm]
+![badge-js][badge-js]
+![badge-ios][badge-ios]
+![badge-macos][badge-macos]
+![badge-windows][badge-windows]
+![badge-linux][badge-linux]
 
 Kotlin Multiplatform (KMP) library that adds support for normalization as described by [Unicode Standard Annex #15 - Unicode Normalization Forms](https://unicode.org/reports/tr15/), by extending the `String` class with a `normalize(Form)` method.
 
@@ -61,14 +61,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-[badge-android]: http://img.shields.io/badge/platform-android-6EDB8D.svg?style=flat
-[badge-ios]: http://img.shields.io/badge/platform-ios-CDCDCD.svg?style=flat
-[badge-js]: http://img.shields.io/badge/platform-js-F8DB5D.svg?style=flat
-[badge-jvm]: http://img.shields.io/badge/platform-jvm-DB413D.svg?style=flat
-[badge-linux]: http://img.shields.io/badge/platform-linux-2D3F6C.svg?style=flat
-[badge-windows]: http://img.shields.io/badge/platform-windows-4D76CD.svg?style=flat
-[badge-mac]: http://img.shields.io/badge/platform-macos-111111.svg?style=flat
-[badge-watchos]: http://img.shields.io/badge/platform-watchos-C0C0C0.svg?style=flat
-[badge-tvos]: http://img.shields.io/badge/platform-tvos-808080.svg?style=flat
-[badge-wasm]: https://img.shields.io/badge/platform-wasm-624FE8.svg?style=flat
 [badge-version]: https://img.shields.io/maven-central/v/com.doist.x.normalize/doistx-normalize?style=flat
+[badge-android]: https://img.shields.io/badge/platform-android-6EDB8D.svg?style=flat
+[badge-ios]: https://img.shields.io/badge/platform-ios-CDCDCD.svg?style=flat
+[badge-js]: https://img.shields.io/badge/platform-js-F8DB5D.svg?style=flat
+[badge-jvm]: https://img.shields.io/badge/platform-jvm-DB413D.svg?style=flat
+[badge-linux]: https://img.shields.io/badge/platform-linux-2D3F6C.svg?style=flat
+[badge-windows]: https://img.shields.io/badge/platform-windows-4D76CD.svg?style=flat
+[badge-macos]: https://img.shields.io/badge/platform-macos-111111.svg?style=flat
+[badge-watchos]: https://img.shields.io/badge/platform-watchos-C0C0C0.svg?style=flat
+[badge-tvos]: https://img.shields.io/badge/platform-tvos-808080.svg?style=flat
+[badge-wasm]: httpss://img.shields.io/badge/platform-wasm-624FE8.svg?style=flat
