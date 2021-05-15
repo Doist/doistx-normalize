@@ -1,1 +1,1 @@
-rootProject.name = "doistx-normalize"
+rootProject.name = "normalize"
