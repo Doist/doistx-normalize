@@ -17,34 +17,22 @@ plugins {
     signing
 }
 
-// Initialize extras.
-extra["ossrh.username"] = null
-extra["ossrh.password"] = null
-extra["signing.keyId"] = null
-extra["signing.secretKey"] = null
-extra["signing.secretKeyRingFile"] = null
-extra["signing.password"] = null
+// Initialize extras from environment variables.
+extra["ossrh.username"] = System.getenv("OSSRH_USERNAME")
+extra["ossrh.password"] = System.getenv("OSSRH_PASSWORD")
+extra["signing.keyId"] = System.getenv("SIGNING_KEY_ID")
+extra["signing.secretKey"] = System.getenv("SIGNING_SECRET_KEY")
+extra["signing.secretKeyRingFile"] = System.getenv("SIGNING_SECRET_KEY_RING_FILE")
+extra["signing.password"] = System.getenv("SIGNING_PASSWORD")
 
-// Read from signing.properties.
-val secretPropsFile = project.rootProject.file("signing.properties")
+// Read from publish.properties, without overriding.
+val secretPropsFile = project.rootProject.file("publish.properties")
 if (secretPropsFile.exists()) {
-    secretPropsFile.reader().use {
-        Properties().apply {
-            load(it)
-        }
-    }.onEach { (name, value) ->
-        extra[name.toString()] = value.toString()
-    }
+    secretPropsFile.reader()
+        .use { Properties().apply { load(it) } }
+        .filter { (key, _) -> extra[key.toString()] == null }
+        .onEach { (key, value) -> extra[key.toString()] = value.toString() }
 }
-
-// Read from environment variables.
-extra["ossrh.username"] = System.getenv("OSSRH_USERNAME") ?: extra["ossrh.username"]
-extra["ossrh.password"] = System.getenv("OSSRH_PASSWORD") ?: extra["ossrh.password"]
-extra["signing.keyId"] = System.getenv("SIGNING_KEY_ID") ?: extra["signing.keyId"]
-extra["signing.secretKey"] = System.getenv("SIGNING_SECRET_KEY") ?: extra["signing.secretKey"]
-extra["signing.secretKeyRingFile"] =
-    System.getenv("SIGNING_SECRET_KEY_RING_FILE") ?: extra["signing.secretKeyRingFile"]
-extra["signing.password"] = System.getenv("SIGNING_PASSWORD") ?: extra["signing.password"]
 
 // Publish JavaDoc with each artifact.
 val javadocJar by tasks.registering(Jar::class) {
@@ -65,9 +53,21 @@ publishing {
     }
 
     // Configure all publications.
+    @Suppress("LocalVariableName")
     publications.withType<MavenPublication> {
-        groupId = "com.doist.x.normalize"
-        artifactId = "doistx-normalize"
+        val GROUP: String by project
+        val POM_DESCRIPTION: String by project
+        val POM_URL: String by project
+        val POM_LICENSE_NAME: String by project
+        val POM_LICENSE_URL: String by project
+        val POM_SCM_URL: String by project
+        val POM_SCM_CONNECTION: String by project
+        val POM_SCM_DEVELOPER_CONNECTION: String by project
+        val POM_DEVELOPER_ID: String by project
+        val POM_DEVELOPER_NAME: String by project
+
+        groupId = GROUP
+        artifactId = rootProject.name
         version = System.getenv("PUBLISH_VERSION") ?: "SNAPSHOT"
 
         // Stub javadoc.jar artifact.
@@ -75,25 +75,28 @@ publishing {
 
         // Provide information requited by Maven Central.
         pom {
-            name.set("doistx-normalize")
-            description.set("KMP library for string unicode normalization")
-            url.set("https://github.com/Doist/doistx-normalize")
+            name.set(rootProject.name)
+            description.set(POM_DESCRIPTION)
+            url.set(POM_URL)
 
             licenses {
                 license {
-                    name.set("MIT")
-                    url.set("https://opensource.org/licenses/MIT")
+                    name.set(POM_LICENSE_NAME)
+                    url.set(POM_LICENSE_URL)
                 }
             }
+
+            scm {
+                url.set(POM_SCM_URL)
+                connection.set(POM_SCM_CONNECTION)
+                developerConnection.set(POM_SCM_DEVELOPER_CONNECTION)
+            }
+
             developers {
                 developer {
-                    id.set("goncalo")
-                    name.set("Gonçalo Silva")
-                    email.set("goncalo@doist.com")
+                    id.set(POM_DEVELOPER_ID)
+                    name.set(POM_DEVELOPER_NAME)
                 }
-            }
-            scm {
-                url.set("https://github.com/Doist/doistx-normalize")
             }
         }
     }
