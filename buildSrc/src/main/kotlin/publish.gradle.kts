@@ -60,7 +60,7 @@ publishing {
     publications.withType<MavenPublication> {
         groupId = "com.doist.x.normalize"
         artifactId = "doistx-normalize"
-        version = System.getenv("PUBLISH_VERSION")
+        version = System.getenv("PUBLISH_VERSION") ?: "SNAPSHOT"
 
         // Stub javadoc.jar artifact.
         artifact(javadocJar.get())
