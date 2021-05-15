@@ -12,4 +12,4 @@ out
 **/cinterop/*
 !**/cinterop/*.def
 
-publish.properties
+.secrets
