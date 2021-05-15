@@ -61,6 +61,10 @@ Building KMP projects can be tricky, as cross-compilation is not widely supporte
 
 CI/CD tests, builds, and publishes macOS and iOS targets on macOS, Windows targets on Windows, and everything else on Linux.
 
+## Releasing
+
+To release a new version, simply push the corresponding tag (e.g., `v1.0.1`). GitHub Actions handles the rest.
+
 ## License
 
 ```
