@@ -7,6 +7,7 @@
 ![badge][badge-mac]
 ![badge][badge-windows]
 ![badge][badge-linux]
+![badge-version][badge-version]
 
 Kotlin Multiplatform (KMP) library that adds support for normalization as described by [Unicode Standard Annex #15 - Unicode Normalization Forms](https://unicode.org/reports/tr15/), by extending the `String` class with a `normalize(Form)` method.
 
@@ -70,3 +71,4 @@ SOFTWARE.
 [badge-watchos]: http://img.shields.io/badge/platform-watchos-C0C0C0.svg?style=flat
 [badge-tvos]: http://img.shields.io/badge/platform-tvos-808080.svg?style=flat
 [badge-wasm]: https://img.shields.io/badge/platform-wasm-624FE8.svg?style=flat
+[badge-version]: https://img.shields.io/maven-central/v/com.doist.x.normalize/doistx-normalize?style=flat
