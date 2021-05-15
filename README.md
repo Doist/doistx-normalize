@@ -91,7 +91,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-[badge-version]: https://img.shields.io/maven-central/v/com.doist.x.normalize/doistx-normalize?style=flat
+[badge-version]: https://img.shields.io/maven-central/v/com.doist.x/normalize?style=flat
 [badge-android]: https://img.shields.io/badge/platform-android-6EDB8D.svg?style=flat
 [badge-ios]: https://img.shields.io/badge/platform-ios-CDCDCD.svg?style=flat
 [badge-js]: https://img.shields.io/badge/platform-js-F8DB5D.svg?style=flat
