@@ -2,7 +2,6 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.`maven-publish`
 import org.gradle.kotlin.dsl.signing
-import java.util.Properties
 
 /*
  * Sets up publishing with Maven Central. Useful resources:
@@ -17,28 +16,11 @@ plugins {
     signing
 }
 
-// Initialize extras from environment variables.
-extra["ossrh.username"] = System.getenv("OSSRH_USERNAME")
-extra["ossrh.password"] = System.getenv("OSSRH_PASSWORD")
-extra["signing.keyId"] = System.getenv("SIGNING_KEY_ID")
-extra["signing.secretKey"] = System.getenv("SIGNING_SECRET_KEY")
-extra["signing.secretKeyRingFile"] = System.getenv("SIGNING_SECRET_KEY_RING_FILE")
-extra["signing.password"] = System.getenv("SIGNING_PASSWORD")
-
-// Read from publish.properties, without overriding.
-val secretPropsFile = project.rootProject.file("publish.properties")
-if (secretPropsFile.exists()) {
-    secretPropsFile.reader()
-        .use { Properties().apply { load(it) } }
-        .filter { (key, _) -> extra[key.toString()] == null }
-        .onEach { (key, value) -> extra[key.toString()] = value.toString() }
-}
-
-// Publish JavaDoc with each artifact.
 val javadocJar by tasks.registering(Jar::class) {
     archiveClassifier.set("javadoc")
 }
 
+// Setup publishing environment.
 publishing {
     // Configure maven central repository.
     repositories {
@@ -46,8 +28,13 @@ publishing {
             name = "sonatype"
             url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
             credentials {
-                username = extra["ossrh.username"]?.toString()
-                password = extra["ossrh.password"]?.toString()
+                // Read `ossrhUsername` and `ossrhPassword` properties.
+                // DO NOT ADD THESE TO SOURCE CONTROL. Store them in your system properties,
+                // or pass them in using ORG_GRADLE_PROJECT_* environment variables.
+                val ossrhUsername: String? by project
+                val ossrhPassword: String? by project
+                username = ossrhUsername
+                password = ossrhPassword
             }
         }
     }
@@ -55,65 +42,66 @@ publishing {
     // Configure all publications.
     @Suppress("LocalVariableName")
     publications.withType<MavenPublication> {
-        val POM_DESCRIPTION: String by project
-        val POM_URL: String by project
-        val POM_LICENSE_NAME: String by project
-        val POM_LICENSE_URL: String by project
-        val POM_SCM_URL: String by project
-        val POM_SCM_CONNECTION: String by project
-        val POM_SCM_DEVELOPER_CONNECTION: String by project
-        val POM_DEVELOPER_ID: String by project
-        val POM_DEVELOPER_NAME: String by project
+        val pomDescription: String by project
+        val pomUrl: String by project
+        val pomLicenseName: String by project
+        val pomLicenseUrl: String by project
+        val pomScmUrl: String by project
+        val pomScmConnection: String by project
+        val pomScmDeveloperConnection: String by project
+        val pomDeveloperId: String by project
+        val pomDeveloperName: String by project
 
-        groupId = project.group.toString()
-        artifactId = rootProject.name
-        version = project.version.toString()
-
-        // Stub javadoc.jar artifact.
+        // Publish javadoc with each artifact.
         artifact(javadocJar.get())
 
         // Provide information requited by Maven Central.
         pom {
             name.set(rootProject.name)
-            description.set(POM_DESCRIPTION)
-            url.set(POM_URL)
+            description.set(pomDescription)
+            url.set(pomUrl)
 
             licenses {
                 license {
-                    name.set(POM_LICENSE_NAME)
-                    url.set(POM_LICENSE_URL)
+                    name.set(pomLicenseName)
+                    url.set(pomLicenseUrl)
                 }
             }
 
             scm {
-                url.set(POM_SCM_URL)
-                connection.set(POM_SCM_CONNECTION)
-                developerConnection.set(POM_SCM_DEVELOPER_CONNECTION)
+                url.set(pomScmUrl)
+                connection.set(pomScmConnection)
+                developerConnection.set(pomScmDeveloperConnection)
             }
 
             developers {
                 developer {
-                    id.set(POM_DEVELOPER_ID)
-                    name.set(POM_DEVELOPER_NAME)
+                    id.set(pomDeveloperId)
+                    name.set(pomDeveloperName)
                 }
             }
         }
     }
 }
 
-// Sign artifacts. extra["signing.*"] properties will be used.
+// Sign artifacts.
+// Use `signingKey` and `signingPassword` properties if provided.
+// Otherwise, default to `signing.keyId`, `signing.password` and `signing.secretKeyRingFile`.
 signing {
-    if (extra["signing.keyId"] == null || extra["signing.password"] == null ||
-        extra["signing.secretKey"] == null && extra["signing.secretKeyRingFile"] == null) {
-        logger.info("Signing configuration is missing. Publishing will not work.")
-        return@signing
-    }
-    if (extra["signing.secretKey"] != null) {
-        useInMemoryPgpKeys(
-            extra["signing.keyId"]?.toString(),
-            extra["signing.secretKey"]?.toString(),
-            extra["signing.password"]?.toString()
-        )
+    val signingKey: String? by project
+    val signingPassword: String? by project
+    if (signingKey != null && signingPassword != null) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
     }
     sign(publishing.publications)
+}
+
+// Publish common targets from the main host only.
+// Set the `publishCommonTargets` project property, e.g., via `-PpublishCommonTargets=true`.
+// See: https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties
+val commonPublications = arrayOf("jvm", "js", "wasm32", "kotlinMultiplatform")
+publishing.publications.matching { commonPublications.contains(it.name) }.all {
+    tasks.withType<AbstractPublishToMaven>()
+        .matching { it.publication == this@all }
+        .configureEach { onlyIf { findProperty("publishCommonTargets") == "true" } }
 }
