@@ -74,17 +74,14 @@ jobs:
       - run: |
           ./gradlew ciCompile
         shell: bash
-      - run: |
-          ./gradlew publishToSonatype -PpublishCommonTargets=$PUBLISH_COMMON_TARGETS --max-workers 1 closeAndReleaseSonatypeStagingRepository
-          ./gradlew --stop
+      - run: ./gradlew publishToSonatype --max-workers 1 closeAndReleaseSonatypeStagingRepository
         env:
-          PUBLISH_VERSION: ${{ steps.get_tag_version.outputs.VERSION }}
-          PUBLISH_COMMON_TARGETS: ${{ runner.os == 'Linux' }}
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
-          SIGNING_SECRET_KEY: ${{ secrets.SIGNING_SECRET_KEY }}
-          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          ORG_GRADLE_PROJECT_version: ${{ steps.get_tag_version.outputs.VERSION }}
+          ORG_GRADLE_PROJECT_publishCommonTargets: ${{ runner.os == 'Linux' }}
+          ORG_GRADLE_PROJECT_ossrhUsername: ${{ secrets.OSSRH_USERNAME }}
+          ORG_GRADLE_PROJECT_ossrhPassword: ${{ secrets.OSSRH_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_SECRET_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
         shell: bash
       - uses: actions/create-release@v1
         env:

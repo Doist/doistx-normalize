@@ -7,8 +7,9 @@ plugins {
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
-group = property("GROUP") ?: throw GradleException("Missing group")
-version = System.getenv("PUBLISH_VERSION") ?: "0.0.0-SNAPSHOT"
+group = "com.doist.x"
+val version: String by project
+setVersion(version)
 
 repositories {
     mavenCentral()
@@ -86,55 +87,18 @@ kotlin {
     }
 }
 
-// Generate stubs before compiling for Linux.
-tasks.findByName("compileKotlinLinuxX64")?.mustRunAfter("cinteropInteropLinuxX64")
-
-// Disable cross-compilation/publication of the Linux target.
-val os: DefaultOperatingSystem = DefaultNativePlatform.getCurrentOperatingSystem()
-tasks.matching { it.name.contains("linux", true) }.configureEach { onlyIf { os.isLinux } }
-
-// Split compilation and test in CI.
-// Apple-specific targets on macOS, Windows-specific targets on Windows, everything else on Linux.
-tasks.register("ciCompile") {
-    group = "build"
-    when {
-        os.isLinux -> dependsOn(
-            tasks.matching { it.name.matches(Regex("^compileKotlin(?!Ios|Macos|Mingw).*$")) }.map { it.name })
-        os.isMacOsX -> dependsOn(
-            tasks.matching { it.name.matches(Regex("^compileKotlin(Ios|Macos).*$")) }.map { it.name })
-        os.isWindows -> dependsOn(
-            tasks.matching { it.name.matches(Regex("^compileKotlin(Mingw).*$")) }.map { it.name })
-    }
-}
-tasks.register("ciTests") {
-    group = "verification"
-    when {
-        os.isLinux -> dependsOn(
-            tasks.matching { it.name.matches(Regex("^(?!ios|macos|mingw).*Test$")) }.map { it.name })
-        os.isMacOsX -> dependsOn(
-            tasks.matching { it.name.matches(Regex("^(ios|macos).*Test$")) }.map { it.name })
-        os.isWindows -> dependsOn(
-            tasks.matching { it.name.matches(Regex("^(mingw).*Test$")) }.map { it.name })
-    }
-}
-
-// Publish common targets from the main host only.
-// Set the `publishCommonTargets` project property, e.g., via `-PpublishCommonTargets=true`.
-// See: https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties
-val commonPublications = arrayOf("jvm", "js", "kotlinMultiplatform")
-publishing.publications.matching { commonPublications.contains(it.name) }.all {
-    tasks.withType<AbstractPublishToMaven>()
-        .matching { it.publication == this@all }
-        .configureEach { onlyIf { findProperty("publishCommonTargets") == "true" } }
-}
-
+// TODO: Move to buildSrc/src/main/kotlin/publish.gradle.kts once the plugin supports it.
 // Leverage Gradle Nexus Publish Plugin to close and release staging repositories,
 // covering the last part of the release process to Maven Central.
 nexusPublishing {
     repositories {
         sonatype {
-            username.set(extra["ossrh.username"]?.toString())
-            password.set(extra["ossrh.password"]?.toString())
+            val sonatypeStagingProfileId: String by project
+            stagingProfileId.set(sonatypeStagingProfileId)
+            val credentials =
+                publishing.repositories.firstIsInstance<AuthenticationSupported>().credentials
+            username.set(credentials.username)
+            password.set(credentials.password)
         }
     }
 }
