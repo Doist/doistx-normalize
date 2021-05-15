@@ -38,12 +38,14 @@ jobs:
         with:
           java-version: '8'
           distribution: 'adopt'
-      - run: sudo apt-get install libunistring-dev
-        if: runner.os == 'Linux'
       - id: get_tag_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
         shell: bash
-      - run: ./gradlew publishAllPublicationsToSonatypeRepository -PpublishCommonTargets=$PUBLISH_COMMON_TARGETS
+      - run: sudo apt-get install libunistring-dev
+        if: runner.os == 'Linux'
+      - run: ./gradlew ciCompile
+        shell: bash
+      - run: ./gradlew publishAllPublicationsToSonatypeRepository -PpublishCommonTargets=$PUBLISH_COMMON_TARGETS --max-workers 1 closeAndReleaseSonatypeStagingRepository
         env:
           PUBLISH_VERSION: ${{ steps.get_tag_version.outputs.VERSION }}
           PUBLISH_COMMON_TARGETS: ${{ runner.os == 'Linux' }}
