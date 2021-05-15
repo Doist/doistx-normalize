@@ -4,6 +4,14 @@ import org.gradle.kotlin.dsl.`maven-publish`
 import org.gradle.kotlin.dsl.signing
 import java.util.Properties
 
+/*
+ * Sets up publishing with Maven Central. Useful resources:
+ * - https://kotlinlang.org/docs/mpp-publish-lib.html
+ * - https://central.sonatype.org/publish/ (esp. the GPG section)
+ * - https://getstream.io/blog/publishing-libraries-to-mavencentral-2021/
+ * - https://dev.to/kotlin/how-to-build-and-publish-a-kotlin-multiplatform-library-going-public-4a8k
+ */
+
 plugins {
     `maven-publish`
     signing
