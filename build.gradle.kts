@@ -1,8 +1,9 @@
-import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
-import org.gradle.nativeplatform.platform.internal.DefaultOperatingSystem
+import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstance
 
 plugins {
     kotlin("multiplatform") version "1.5.0"
+    id("disable-cross-compile")
+    id("ci")
     id("publish")
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
