@@ -22,23 +22,6 @@ val javadocJar by tasks.registering(Jar::class) {
 
 // Setup publishing environment.
 publishing {
-    // Configure maven central repository.
-    repositories {
-        maven {
-            name = "sonatype"
-            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials {
-                // Read `ossrhUsername` and `ossrhPassword` properties.
-                // DO NOT ADD THESE TO SOURCE CONTROL. Store them in your system properties,
-                // or pass them in using ORG_GRADLE_PROJECT_* environment variables.
-                val ossrhUsername: String? by project
-                val ossrhPassword: String? by project
-                username = ossrhUsername
-                password = ossrhPassword
-            }
-        }
-    }
-
     // Configure all publications.
     @Suppress("LocalVariableName")
     publications.withType<MavenPublication> {
