@@ -89,17 +89,20 @@ kotlin {
 }
 
 // TODO: Move to buildSrc/src/main/kotlin/publish.gradle.kts once the plugin supports it.
-// Leverage Gradle Nexus Publish Plugin to close and release staging repositories,
+// Leverage Gradle Nexus Publish Plugin to create, close and release staging repositories,
 // covering the last part of the release process to Maven Central.
 nexusPublishing {
     repositories {
         sonatype {
-            val sonatypeStagingProfileId: String by project
-            stagingProfileId.set(sonatypeStagingProfileId)
-            val credentials =
-                publishing.repositories.firstIsInstance<AuthenticationSupported>().credentials
-            username.set(credentials.username)
-            password.set(credentials.password)
+            // Read `ossrhUsername` and `ossrhPassword` properties.
+            // DO NOT ADD THESE TO SOURCE CONTROL. Store them in your system properties,
+            // or pass them in using ORG_GRADLE_PROJECT_* environment variables.
+            val ossrhUsername: String? by project
+            val ossrhPassword: String? by project
+            val ossrhStagingProfileId: String by project
+            username.set(ossrhUsername)
+            password.set(ossrhPassword)
+            stagingProfileId.set(ossrhStagingProfileId)
         }
     }
 }
