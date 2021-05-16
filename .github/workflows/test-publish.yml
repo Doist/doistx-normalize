@@ -69,7 +69,7 @@ jobs:
         if: runner.os == 'Linux'
       - run: ./gradlew ciCompile
         shell: bash
-      - run: ./gradlew publishToSonatype --max-workers 1 closeAndReleaseSonatypeStagingRepository
+      - run: ./gradlew -i publishToSonatype closeAndReleaseSonatypeStagingRepository
         env:
           ORG_GRADLE_PROJECT_version: ${{ steps.get_tag_version.outputs.VERSION }}
           ORG_GRADLE_PROJECT_publishCommonTargets: ${{ runner.os == 'Linux' }}
