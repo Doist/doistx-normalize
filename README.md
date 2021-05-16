@@ -1,6 +1,6 @@
 # doistx-normalize
 
-![badge-version][badge-version]
+[![badge-version]](https://search.maven.org/search?q=g:com.doist.x%20a:normalize*)
 ![badge-android][badge-android]
 ![badge-jvm][badge-jvm]
 ![badge-js][badge-js]
