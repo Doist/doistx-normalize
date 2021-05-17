@@ -85,6 +85,11 @@ signing {
 val commonPublications = arrayOf("jvm", "js", "wasm32", "kotlinMultiplatform")
 publishing.publications.matching { commonPublications.contains(it.name) }.all {
     tasks.withType<AbstractPublishToMaven>()
-        .matching { it.publication == this@all }
+        .matching {
+            // TODO: Move back to checking for publication once this issue is fixed:
+            // https://github.com/gradle-nexus/publish-plugin/issues/103
+            // it.publication == this@all
+            it.name.matches("publish(Jvm|Js|Wasm32|KotlinMultiplatform).*".toRegex())
+        }
         .configureEach { onlyIf { findProperty("publishCommonTargets") == "true" } }
 }
