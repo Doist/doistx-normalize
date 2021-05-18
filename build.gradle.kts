@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstance
-
 plugins {
     kotlin("multiplatform") version "1.5.0"
     id("disable-cross-compile")
@@ -25,6 +23,7 @@ kotlin {
             useJUnit()
         }
     }
+
     js(IR) {
         browser {
             commonWebpackConfig {
@@ -37,9 +36,20 @@ kotlin {
             }
         }
     }
-    ios()
+
+    iosX64()
+    iosArm64()
+
+    watchosX64()
+    watchosArm64()
+
+    tvosX64()
+    tvosArm64()
+
     macosX64()
+
     mingwX64()
+
     linuxX64 {
         val main by compilations.getting
         val interop by main.cinterops.creating {
@@ -59,31 +69,52 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
+
         val jvmMain by getting
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
+
         val jsMain by getting
         val jsTest by getting {
             dependencies {
                 implementation(kotlin("test-js"))
             }
         }
-        val nativeDarwinMain by creating {
+
+        val darwinMain by creating {
             dependsOn(commonMain)
         }
+
         val iosArm64Main by getting {
-            dependsOn(nativeDarwinMain)
+            dependsOn(darwinMain)
         }
         val iosX64Main by getting {
-            dependsOn(nativeDarwinMain)
+            dependsOn(darwinMain)
         }
+
+        val watchosArm64Main by getting {
+            dependsOn(darwinMain)
+        }
+        val watchosX64Main by getting {
+            dependsOn(darwinMain)
+        }
+
+        val tvosArm64Main by getting {
+            dependsOn(darwinMain)
+        }
+        val tvosX64Main by getting {
+            dependsOn(darwinMain)
+        }
+
         val macosX64Main by getting {
-            dependsOn(nativeDarwinMain)
+            dependsOn(darwinMain)
         }
+
         val mingwX64Main by getting
+
         val linuxX64Main by getting
     }
 }

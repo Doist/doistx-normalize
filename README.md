@@ -5,6 +5,8 @@
 ![badge-jvm][badge-jvm]
 ![badge-js][badge-js]
 ![badge-ios][badge-ios]
+![badge-ios][badge-watchos]
+![badge-ios][badge-tvos]
 ![badge-macos][badge-macos]
 ![badge-windows][badge-windows]
 ![badge-linux][badge-linux]
