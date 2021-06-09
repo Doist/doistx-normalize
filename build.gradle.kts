@@ -7,8 +7,7 @@ plugins {
 }
 
 group = "com.doist.x"
-val version: String by project
-setVersion(version)
+version = property("version") as String
 
 repositories {
     mavenCentral()
@@ -133,9 +132,9 @@ nexusPublishing {
             // Read `ossrhUsername` and `ossrhPassword` properties.
             // DO NOT ADD THESE TO SOURCE CONTROL. Store them in your system properties,
             // or pass them in using ORG_GRADLE_PROJECT_* environment variables.
-            val ossrhUsername: String? by project
-            val ossrhPassword: String? by project
-            val ossrhStagingProfileId: String by project
+            val ossrhUsername = findProperty("osshr.username") as String?
+            val ossrhPassword = findProperty("osshr.password") as String?
+            val ossrhStagingProfileId = findProperty("osshr.stagingProfileId") as String?
             username.set(ossrhUsername)
             password.set(ossrhPassword)
             stagingProfileId.set(ossrhStagingProfileId)
