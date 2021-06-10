@@ -2,6 +2,7 @@ import doist.x.normalize.Form
 import doist.x.normalize.normalize
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFails
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
@@ -22,24 +23,10 @@ class NormalizeTest {
         assertEquals(Form.NFD, Form.valueOf("NFD"))
         assertEquals(Form.NFKC, Form.valueOf("NFKC"))
         assertEquals(Form.NFKD, Form.valueOf("NFKD"))
-        try {
-            Form.valueOf("nope")
-            fail("Should throw kotlin.Exception")
-        } catch (e: Exception) {
-            // Expected.
-        }
-        try {
-            Form.valueOf("nfc")
-            fail("Should throw kotlin.Exception")
-        } catch (e: Exception) {
-            // Expected.
-        }
-        try {
-            Form.valueOf("NFC ")
-            fail("Should throw kotlin.Exception")
-        } catch (e: Exception) {
-            // Expected.
-        }
+
+        assertFails { Form.valueOf("nope") }
+        assertFails { Form.valueOf("nfc") }
+        assertFails { Form.valueOf("NFC ") }
     }
 
     @Test
