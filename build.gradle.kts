@@ -1,9 +1,8 @@
 plugins {
     kotlin("multiplatform") version "1.5.10"
-    id("disable-cross-compile") apply false
-    id("ci") apply false
-    id("cinterop") apply false
-    id("publish") apply false
+    id("cinterop")
+    id("publish")
+    id("targets")
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
@@ -54,10 +53,6 @@ kotlin {
         val main by compilations.getting
         val uninorm by main.cinterops.creating {
             defFile = project.file("src/linuxX64Interop/cinterop/uninorm.def")
-        }
-
-        binaries {
-            executable()
         }
     }
 
@@ -118,12 +113,6 @@ kotlin {
         val linuxX64Main by getting
     }
 }
-
-// Apply plugins now that targets were created.
-apply(plugin = "disable-cross-compile")
-apply(plugin = "ci")
-apply(plugin = "cinterop")
-apply(plugin = "publish")
 
 // TODO: Move to buildSrc/src/main/kotlin/publish.gradle.kts once the plugin supports it.
 // Leverage Gradle Nexus Publish Plugin to create, close and release staging repositories,
