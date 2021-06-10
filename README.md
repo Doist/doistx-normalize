@@ -72,7 +72,7 @@ When targets are built, tested and published in CI/CD, the Apple host handles Ap
 
 ## Releasing
 
-To release a new version, simply push the corresponding tag (e.g., `v1.0.1`). GitHub Actions handles the rest.
+To release a new version, ensure `CHANGELOG.md` is up-to-date, and push the corresponding tag (e.g., `v1.2.3`). GitHub Actions handles the rest.
 
 ## License
 
