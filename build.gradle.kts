@@ -114,9 +114,10 @@ kotlin {
     }
 }
 
-// TODO: Move to buildSrc/src/main/kotlin/publish.gradle.kts once the plugin supports it.
 // Leverage Gradle Nexus Publish Plugin to create, close and release staging repositories,
 // covering the last part of the release process to Maven Central.
+//
+// NOTE: Move to buildSrc/src/main/kotlin/publish.gradle.kts once the plugin supports it.
 nexusPublishing {
     repositories {
         sonatype {
