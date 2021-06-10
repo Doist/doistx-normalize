@@ -44,7 +44,7 @@ kotlin {
    sourceSets {
       val commonMain by getting {
          dependencies {
-            implementation("com.doist.x:normalize:1.0.0")
+            implementation("com.doist.x:normalize:1.0.1")
          }
       }
    }
@@ -70,7 +70,7 @@ The defaults can be adjusted using two [project properties](https://docs.gradle.
 
 When targets are built, tested and published in CI/CD, the Apple host handles Apple-specific targets, the Windows host handles Windows, and Linux handles everything else.
 
-## Releasing
+## Release
 
 To release a new version, ensure `CHANGELOG.md` is up-to-date, and push the corresponding tag (e.g., `v1.2.3`). GitHub Actions handles the rest.
 
