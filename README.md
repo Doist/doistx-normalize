@@ -56,12 +56,19 @@ kotlin {
 Building KMP projects can be tricky, as cross-compilation is not widely supported. In this case:
 - macOS and iOS targets must be built on macOS.
 - Windows targets should be built on Windows.
-  - Alternatively, IntelliJ IDEA 2021.1 + AdoptOpenJDK 8u292-b10 have been shown to work under Wine 6.7.
-- Linux targets can be cross-compiled, but this is disabled due to `libunistring` not being pre-installed on macOS/Windows.
-  - To enable, comment the respective line in `buildSrc/src/main/kotlin/disable-cross-compile.gradle.kts`.
+  - Alternatively, IntelliJ IDEA 2021.1 + AdoptOpenJDK 8u292-b10 have been shown to work under recent versions of Wine.
+- Linux targets can be cross-compiled, but note that `libunistring` is a dependency, and it is not installed on macOS/Windows by default.
 - JVM/Android and JS targets can be cross-compiled.
 
-CI/CD tests, builds, and publishes macOS and iOS targets on macOS, Windows targets on Windows, and everything else on Linux.
+The defaults can be adjusted using two [project properties](https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties):
+- `targets` is a string that dictates what targets to build, test, or publish, depending on the Gradle task that runs.
+   - `all` (default): All possible targets in the current host.
+   - `native`: Native targets only (e.g., on macOS, that's macOS, iOS, watchOS and tvOS).
+   - `common`: Common targets only (e.g., JVM, JS, Wasm).
+   - `host`: Host OS only.
+- `publishRootTarget` is a boolean that indicates whether the [`kotlinMultiplatform` root publication](https://kotlinlang.org/docs/mpp-publish-lib.html#structure-of-publications) is included when publishing enabled targets (can only be done once).
+
+When targets are built, tested and published in CI/CD, the Apple host handles Apple-specific targets, the Windows host handles Windows, and Linux handles everything else.
 
 ## Releasing
 
