@@ -3,7 +3,12 @@ package doist.x.normalize
 import kotlinx.cinterop.allocArray
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.toKString
-import platform.windows.*
+import platform.windows.NormalizationC
+import platform.windows.NormalizationD
+import platform.windows.NormalizationKC
+import platform.windows.NormalizationKD
+import platform.windows.NormalizeString
+import platform.windows.WCHARVar
 
 actual fun String.normalize(form: Form): String = memScoped {
     val winForm = when (form) {
