@@ -6,7 +6,7 @@ import platform.Foundation.decomposedStringWithCompatibilityMapping
 import platform.Foundation.precomposedStringWithCanonicalMapping
 import platform.Foundation.precomposedStringWithCompatibilityMapping
 
-actual fun String.normalize(form: Form): String {
+public actual fun String.normalize(form: Form): String {
     @Suppress("CAST_NEVER_SUCCEEDS")
     val str = this as NSString
     return when (form) {

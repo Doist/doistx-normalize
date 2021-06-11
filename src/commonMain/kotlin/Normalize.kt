@@ -5,13 +5,13 @@ package doist.x.normalize
  *
  * Note: This method does not change the original string.
  */
-expect fun String.normalize(form: Form): String
+public expect fun String.normalize(form: Form): String
 
 /**
  * Unicode normalization form as described in
  * [Unicode® Standard Annex #15](https://unicode.org/reports/tr15/).
  */
-enum class Form {
+public enum class Form {
     /**
      * Canonical decomposition, followed by canonical composition.
      */

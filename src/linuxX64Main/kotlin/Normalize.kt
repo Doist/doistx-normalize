@@ -14,7 +14,7 @@ import uninorm.UNINORM_NFKC
 import uninorm.UNINORM_NFKD
 import uninorm.u8_normalize
 
-actual fun String.normalize(form: Form) = memScoped {
+public actual fun String.normalize(form: Form): String = memScoped {
     val str = this@normalize.utf8
     val uninormForm = when (form) {
         Form.NFC -> UNINORM_NFC

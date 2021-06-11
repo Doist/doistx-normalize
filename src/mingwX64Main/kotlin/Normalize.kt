@@ -10,7 +10,7 @@ import platform.windows.NormalizationKD
 import platform.windows.NormalizeString
 import platform.windows.WCHARVar
 
-actual fun String.normalize(form: Form): String = memScoped {
+public actual fun String.normalize(form: Form): String = memScoped {
     val winForm = when (form) {
         Form.NFC -> NormalizationC
         Form.NFD -> NormalizationD
