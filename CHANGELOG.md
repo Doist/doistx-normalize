@@ -2,6 +2,13 @@
 
 All notable changes are documented in this file. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.0.2] - 2021-07-22
+
+### Added
+
+- Support for watchOS ARM 32-bit, including the Apple Watch Series 3, still supported by watchOS 7
+- Support for Linux ARM 64-bit, including the Raspberry Pi 4
+
 ## [1.0.1] - 2021-05-18
 
 ### Added
