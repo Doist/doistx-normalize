@@ -55,9 +55,6 @@ fun KotlinMultiplatformExtension.configureCommonTargets() {
 
     js(IR) {
         browser {
-            commonWebpackConfig {
-                cssSupport.enabled = false
-            }
             testTask {
                 useKarma {
                     useChromiumHeadless()
