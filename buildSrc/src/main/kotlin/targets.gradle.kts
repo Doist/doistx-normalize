@@ -29,8 +29,8 @@ kotlin {
                 val os: DefaultOperatingSystem = DefaultNativePlatform.getCurrentOperatingSystem()
                 when {
                     os.isMacOsX -> configureAppleTargets(enabledTarget == "host")
-                    os.isWindows -> configureWindowsTargets(enabledTarget == "host")
-                    os.isLinux -> configureLinuxTargets(enabledTarget == "host")
+                    os.isWindows -> configureWindowsTargets()
+                    os.isLinux -> configureLinuxTargets()
                 }
             }
             else -> {
@@ -67,12 +67,14 @@ fun KotlinMultiplatformExtension.configureCommonTargets() {
     }
 
     sourceSets {
+        @Suppress("UNUSED_VARIABLE")
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
         }
 
+        @Suppress("UNUSED_VARIABLE")
         val jsTest by getting {
             dependencies {
                 implementation(kotlin("test-js"))
@@ -107,13 +109,14 @@ fun KotlinMultiplatformExtension.configureAppleTargets(hostOnly: Boolean = false
     }
 }
 
-fun KotlinMultiplatformExtension.configureWindowsTargets(hostOnly: Boolean = false) {
+fun KotlinMultiplatformExtension.configureWindowsTargets() {
     mingwX64()
 }
 
-fun KotlinMultiplatformExtension.configureLinuxTargets(hostOnly: Boolean = false) {
+fun KotlinMultiplatformExtension.configureLinuxTargets() {
     linuxX64 {
         val main by compilations.getting
+        @Suppress("UNUSED_VARIABLE")
         val uninorm by main.cinterops.creating {
             defFile = project.file("src/linuxX64Interop/cinterop/uninorm.def")
         }
