@@ -6,7 +6,10 @@ import org.gradle.api.GradleException
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 import org.gradle.nativeplatform.platform.internal.DefaultOperatingSystem
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet.Companion.COMMON_MAIN_SOURCE_SET_NAME
 import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
@@ -30,7 +33,7 @@ kotlin {
                 when {
                     os.isMacOsX -> configureAppleTargets(enabledTarget == "host")
                     os.isWindows -> configureWindowsTargets()
-                    os.isLinux -> configureLinuxTargets()
+                    os.isLinux -> configureLinuxTargets(enabledTarget == "host")
                 }
             }
             else -> {
@@ -81,7 +84,7 @@ fun KotlinMultiplatformExtension.configureCommonTargets() {
 }
 
 fun KotlinMultiplatformExtension.configureAppleTargets(hostOnly: Boolean = false) {
-    val darwinTargets = mutableListOf<KotlinTarget>(macosX64())
+    val darwinTargets = mutableListOf<KotlinNativeTarget>(macosX64())
 
     if (!hostOnly) {
         darwinTargets.apply {
@@ -98,7 +101,7 @@ fun KotlinMultiplatformExtension.configureAppleTargets(hostOnly: Boolean = false
     }
 
     sourceSets {
-        val darwinMain by creating { dependsOn(getByName("commonMain")) }
+        val darwinMain by creating { dependsOn(getByName(COMMON_MAIN_SOURCE_SET_NAME)) }
 
         darwinTargets.forEach { darwinTarget ->
             getByName("${darwinTarget.name}Main") { dependsOn(darwinMain) }
@@ -110,12 +113,29 @@ fun KotlinMultiplatformExtension.configureWindowsTargets() {
     mingwX64()
 }
 
-fun KotlinMultiplatformExtension.configureLinuxTargets() {
-    linuxX64 {
-        val main by compilations.getting
-        @Suppress("UNUSED_VARIABLE")
-        val uninorm by main.cinterops.creating {
-            defFile = project.file("src/linuxX64Interop/cinterop/uninorm.def")
+fun KotlinMultiplatformExtension.configureLinuxTargets(hostOnly: Boolean = false) {
+    val linuxTargets = mutableListOf<KotlinNativeTarget>()
+
+    val arch = System.getProperty("os.arch")
+    if (!hostOnly || arch == "amd64" || arch == "x86_64") {
+        linuxTargets.add(linuxX64())
+    }
+    if (!hostOnly || arch == "aarch64") {
+        linuxTargets.add(linuxArm64())
+    }
+
+    linuxTargets.forEach { linuxTarget ->
+        linuxTarget.compilations.getByName("main") {
+            @Suppress("UNUSED_VARIABLE")
+            val uninorm by cinterops.creating
+        }
+    }
+
+    sourceSets {
+        val linuxMain by creating { dependsOn(getByName(COMMON_MAIN_SOURCE_SET_NAME)) }
+
+        linuxTargets.forEach { linuxTarget ->
+            getByName("${linuxTarget.name}Main") { dependsOn(linuxMain) }
         }
     }
 }

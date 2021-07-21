@@ -37,7 +37,7 @@ jobs:
           path: ~/.konan
           key: ${{ runner.os }}-konan-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/buildSrc/**/*.kt') }}
           restore-keys: ${{ runner.os }}-konan-
-      - run: sudo apt-get install -y libunistring-dev
+      - run: sudo apt-get install -y libunistring-dev libc6-dev-i386
         if: runner.os == 'Linux'
       - run: ./gradlew check
         env:
@@ -82,7 +82,7 @@ jobs:
       - id: get_tag_version
         run: echo "::set-output name=VERSION::${GITHUB_REF#refs/tags/v}"
         shell: bash
-      - run: sudo apt-get install -y libunistring-dev
+      - run: sudo apt-get install -y libunistring-dev libc6-dev-i386
         if: runner.os == 'Linux'
       - run: ./gradlew assemble
         shell: bash

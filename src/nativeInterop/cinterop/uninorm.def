@@ -1,0 +1,11 @@
+# Install libunistring-dev, and generate with:
+# $ ./gradlew cinteropUninorm*
+# OR
+# $ cinterop -def uninorm.def
+
+package = uninorm
+headers = uninorm.h
+headerFilter = uninorm.h
+
+compilerOpts.linux = -I/usr/include -I/usr/include/x86_64-linux-gnu -I/usr/include/arm-linux-gnueabihf
+linkerOpts.linux = -L/usr/lib64 -L/usr/lib/x86_64-linux-gnu -L/usr/lib/arm-linux-gnueabihf -lunistring

@@ -2,6 +2,7 @@ package doist.x.normalize
 
 import kotlinx.cinterop.ByteVar
 import kotlinx.cinterop.alloc
+import kotlinx.cinterop.convert
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.reinterpret
@@ -23,7 +24,7 @@ public actual fun String.normalize(form: Form): String = memScoped {
         Form.NFKD -> UNINORM_NFKD
     }
     val result = u8_normalize(
-        uninormForm, str.ptr.reinterpret(), str.size.toULong(), null, alloc<size_tVar>().ptr
+        uninormForm, str.ptr.reinterpret(), str.size.convert(), null, alloc<size_tVar>().ptr
     )!!
     result.reinterpret<ByteVar>().toKString()
 }
