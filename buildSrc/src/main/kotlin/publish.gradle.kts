@@ -14,7 +14,11 @@ import org.gradle.kotlin.dsl.signing
 plugins {
     `maven-publish`
     signing
+    id("io.github.gradle-nexus.publish-plugin")
 }
+
+group = "com.doist.x"
+version = property("version") as String
 
 val javadocJar by tasks.registering(Jar::class) {
     archiveClassifier.set("javadoc")
@@ -84,4 +88,22 @@ publishing.publications.matching { it.name == "kotlinMultiplatform" }.all {
     tasks.withType<AbstractPublishToMaven>()
         .matching { it.publication == this@all }
         .configureEach { onlyIf { findProperty("publishRootTarget") == "true" } }
+}
+
+// Leverage Gradle Nexus Publish Plugin to create, close and release staging repositories,
+// covering the last part of the release process to Maven Central.
+nexusPublishing {
+    repositories {
+        sonatype {
+            // Read `ossrhUsername` and `ossrhPassword` properties.
+            // DO NOT ADD THESE TO SOURCE CONTROL. Store them in your system properties,
+            // or pass them in using ORG_GRADLE_PROJECT_* environment variables.
+            val ossrhUsername = findProperty("ossrh.username") as String?
+            val ossrhPassword = findProperty("ossrh.password") as String?
+            val ossrhStagingProfileId = findProperty("ossrh.stagingProfileId") as String?
+            username.set(ossrhUsername)
+            password.set(ossrhPassword)
+            stagingProfileId.set(ossrhStagingProfileId)
+        }
+    }
 }

@@ -3,11 +3,7 @@ plugins {
     id("cinterop")
     id("publish")
     id("targets")
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
-
-group = "com.doist.x"
-version = property("version") as String
 
 repositories {
     mavenCentral()
@@ -118,24 +114,5 @@ kotlin {
 
         val linuxX64Main by getting
     }
-}
 
-// Leverage Gradle Nexus Publish Plugin to create, close and release staging repositories,
-// covering the last part of the release process to Maven Central.
-//
-// NOTE: Move to buildSrc/src/main/kotlin/publish.gradle.kts once the plugin supports it.
-nexusPublishing {
-    repositories {
-        sonatype {
-            // Read `ossrhUsername` and `ossrhPassword` properties.
-            // DO NOT ADD THESE TO SOURCE CONTROL. Store them in your system properties,
-            // or pass them in using ORG_GRADLE_PROJECT_* environment variables.
-            val ossrhUsername = findProperty("osshr.username") as String?
-            val ossrhPassword = findProperty("osshr.password") as String?
-            val ossrhStagingProfileId = findProperty("osshr.stagingProfileId") as String?
-            username.set(ossrhUsername)
-            password.set(ossrhPassword)
-            stagingProfileId.set(ossrhStagingProfileId)
-        }
-    }
 }
