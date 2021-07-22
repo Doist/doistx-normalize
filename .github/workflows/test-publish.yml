@@ -25,20 +25,6 @@ jobs:
         with:
           java-version: '8'
           distribution: 'adopt'
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            !~/.gradle/caches/modules-2/modules-2.lock
-            !~/.gradle/caches/modules-2/gc.properties
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: ${{ runner.os }}-gradle-
-      - uses: actions/cache@v2
-        with:
-          path: ~/.konan
-          key: ${{ runner.os }}-konan-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: ${{ runner.os }}-konan-
       - run: sudo apt-get install -y libunistring-dev libc6-dev-i386
         if: runner.os == 'Linux'
       - run: ./gradlew assemble check
@@ -69,20 +55,6 @@ jobs:
         with:
           java-version: '8'
           distribution: 'adopt'
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            !~/.gradle/caches/modules-2/modules-2.lock
-            !~/.gradle/caches/modules-2/gc.properties
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: ${{ runner.os }}-gradle-
-      - uses: actions/cache@v2
-        with:
-          path: ~/.konan
-          key: ${{ runner.os }}-konan-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: ${{ runner.os }}-konan-
       - id: get_tag_version
         run: echo "::set-output name=VERSION::${GITHUB_REF#refs/tags/v}"
         shell: bash
