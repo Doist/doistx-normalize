@@ -62,7 +62,7 @@ jobs:
         if: runner.os == 'Linux'
       - run: ./gradlew assemble
         shell: bash
-      - run: ./gradlew -i publishToSonatype closeAndReleaseSonatypeStagingRepository
+      - run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
         env:
           ORG_GRADLE_PROJECT_version: ${{ steps.get_tag_version.outputs.VERSION }}
           ORG_GRADLE_PROJECT_targets: ${{ matrix.targets }}
