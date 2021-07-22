@@ -39,7 +39,7 @@ jobs:
           restore-keys: ${{ runner.os }}-konan-
       - run: sudo apt-get install -y libunistring-dev libc6-dev-i386
         if: runner.os == 'Linux'
-      - run: ./gradlew check
+      - run: ./gradlew assemble check
         env:
           ORG_GRADLE_PROJECT_targets: ${{ matrix.targets }}
         shell: bash
