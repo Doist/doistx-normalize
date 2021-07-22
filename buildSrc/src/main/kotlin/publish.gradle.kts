@@ -83,13 +83,6 @@ signing {
     sign(publishing.publications)
 }
 
-// Publish root target when explicitly specified, since it can only be published once.
-publishing.publications.matching { it.name == "kotlinMultiplatform" }.all {
-    tasks.withType<AbstractPublishToMaven>()
-        .matching { it.publication == this@all }
-        .configureEach { onlyIf { findProperty("publishRootTarget") == "true" } }
-}
-
 // Leverage Gradle Nexus Publish Plugin to create, close and release staging repositories,
 // covering the last part of the release process to Maven Central.
 nexusPublishing {
@@ -107,3 +100,7 @@ nexusPublishing {
         }
     }
 }
+
+// Publish root target only when explicitly specified, since it can only be published once.
+tasks.matching { it.name.startsWith("publishKotlinMultiplatform") }
+    .configureEach { onlyIf { findProperty("publishRootTarget") == "true" } }
