@@ -80,7 +80,7 @@ jobs:
           key: ${{ runner.os }}-konan-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/buildSrc/**/*.kt') }}
           restore-keys: ${{ runner.os }}-konan-
       - id: get_tag_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
+        run: echo "::set-output name=VERSION::${GITHUB_REF#refs/tags/v}"
         shell: bash
       - run: sudo apt-get install -y libunistring-dev
         if: runner.os == 'Linux'
