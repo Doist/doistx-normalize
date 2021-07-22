@@ -29,15 +29,15 @@ publishing {
     // Configure all publications.
     @Suppress("LocalVariableName")
     publications.withType<MavenPublication> {
-        val pomDescription = property("pom.description") as String
-        val pomUrl = property("pom.url") as String
-        val pomLicenseName = property("pom.license.name") as String
-        val pomLicenseUrl = property("pom.license.url") as String
-        val pomScmUrl = property("pom.scm.url") as String
-        val pomScmConnection = property("pom.scm.connection") as String
-        val pomScmDeveloperConnection = property("pom.scm.developerConnection") as String
-        val pomDeveloperId = property("pom.developer.id") as String
-        val pomDeveloperName = property("pom.developer.name") as String
+        val pomDescription: String by project
+        val pomUrl: String by project
+        val pomLicenseName: String by project
+        val pomLicenseUrl: String by project
+        val pomScmUrl: String by project
+        val pomScmConnection: String by project
+        val pomScmDeveloperConnection: String by project
+        val pomDeveloperId: String by project
+        val pomDeveloperName: String by project
 
         // Publish javadoc with each artifact.
         artifact(javadocJar.get())
@@ -72,11 +72,11 @@ publishing {
 }
 
 // Sign artifacts.
-// Use `signing.key` and `signing.password` properties if provided.
+// Use `signingKey` and `signingPassword` properties if provided.
 // Otherwise, default to `signing.keyId`, `signing.password` and `signing.secretKeyRingFile`.
 signing {
-    val signingKey = findProperty("signing.key") as String?
-    val signingPassword = findProperty("signing.password") as String?
+    val signingKey: String? by project
+    val signingPassword: String? by project
     if (signingKey != null && signingPassword != null) {
         useInMemoryPgpKeys(signingKey, signingPassword)
     }
@@ -98,9 +98,9 @@ nexusPublishing {
             // Read `ossrhUsername` and `ossrhPassword` properties.
             // DO NOT ADD THESE TO SOURCE CONTROL. Store them in your system properties,
             // or pass them in using ORG_GRADLE_PROJECT_* environment variables.
-            val ossrhUsername = findProperty("ossrh.username") as String?
-            val ossrhPassword = findProperty("ossrh.password") as String?
-            val ossrhStagingProfileId = findProperty("ossrh.stagingProfileId") as String?
+            val ossrhUsername: String? by project
+            val ossrhPassword: String? by project
+            val ossrhStagingProfileId: String? by project
             username.set(ossrhUsername)
             password.set(ossrhPassword)
             stagingProfileId.set(ossrhStagingProfileId)
