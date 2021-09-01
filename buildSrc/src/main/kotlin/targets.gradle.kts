@@ -82,7 +82,10 @@ fun KotlinMultiplatformExtension.configureCommonTargets() {
 }
 
 fun KotlinMultiplatformExtension.configureAppleTargets(hostOnly: Boolean = false) {
-    val darwinTargets = mutableListOf<KotlinNativeTarget>(macosX64())
+    val darwinTargets = mutableListOf<KotlinNativeTarget>(
+        macosX64(),
+        macosArm64()
+    )
 
     if (!hostOnly) {
         darwinTargets.apply {

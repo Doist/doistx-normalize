@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Added
+
+- Support for macOS ARM 64-bit
+
 ## [1.0.3] - 2021-07-22
 
 ### Fixed
