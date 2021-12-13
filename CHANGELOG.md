@@ -7,6 +7,7 @@ All notable changes are documented in this file. The format follows [Keep a Chan
 ### Added
 
 - Support for macOS ARM 64-bit
+- Support for targetting Apple simulators on macOS ARM 64-bit 
 
 ## [1.0.3] - 2021-07-22
 
