@@ -90,13 +90,16 @@ fun KotlinMultiplatformExtension.configureAppleTargets(hostOnly: Boolean = false
     if (!hostOnly) {
         darwinTargets.apply {
             add(iosX64())
+            add(iosSimulatorArm64())
             add(iosArm64())
 
             add(watchosX64())
+            add(watchosSimulatorArm64())
             add(watchosArm32())
             add(watchosArm64())
 
             add(tvosX64())
+            add(tvosSimulatorArm64())
             add(tvosArm64())
         }
     }
