@@ -46,9 +46,6 @@ kotlin {
 
 fun KotlinMultiplatformExtension.configureCommonTargets() {
     jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
-        }
         testRuns["test"].executionTask.configure {
             useJUnit()
         }
