@@ -4,6 +4,8 @@ All notable changes are documented in this file. The format follows [Keep a Chan
 
 ## [Unreleased]
 
+## [1.0.4] - 2021-12-13
+
 ### Added
 
 - Support for macOS ARM 64-bit
