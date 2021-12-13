@@ -22,16 +22,10 @@ plugins {
 group = "com.doist.x"
 version = property("version") as String
 
-val dokkaJavadocJar by tasks.register<Jar>("dokkaJavadocJar") {
-    dependsOn(tasks.dokkaJavadoc)
-    from(tasks.dokkaJavadoc.flatMap { it.outputDirectory })
-    archiveClassifier.set("javadoc")
-}
-
-val dokkaHtmlJar by tasks.register<Jar>("dokkaHtmlJar") {
+val dokkaHtmlJavadocJar by tasks.registering(Jar::class) {
     dependsOn(tasks.dokkaHtml)
     from(tasks.dokkaHtml.flatMap { it.outputDirectory })
-    archiveClassifier.set("html-doc")
+    archiveClassifier.set("javadoc")
 }
 
 // Setup publishing environment.
@@ -50,8 +44,7 @@ publishing {
         val pomDeveloperName: String by project
 
         // Publish docs with each artifact.
-        artifact(dokkaJavadocJar)
-        artifact(dokkaHtmlJar)
+        artifact(dokkaHtmlJavadocJar)
 
         // Provide information requited by Maven Central.
         pom {
