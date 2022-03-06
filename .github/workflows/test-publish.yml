@@ -16,7 +16,7 @@ jobs:
         include:
           - os: ubuntu-latest
             targets: all
-          - os: macos-11
+          - os: macos-latest
             targets: native
           - os: windows-latest
             targets: native
@@ -48,7 +48,7 @@ jobs:
           - os: ubuntu-latest
             targets: all
             publishRootTarget: true
-          - os: macos-11
+          - os: macos-latest
             targets: native
             publishRootTarget: false
           - os: windows-latest
