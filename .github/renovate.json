@@ -1,6 +1,5 @@
 {
   "extends": [
-    "config:base",
-    ":disableDependencyDashboard"
+    "github>doist/renovate-config:kotlin-base"
   ]
 }
