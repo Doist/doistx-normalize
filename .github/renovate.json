@@ -1,5 +1,6 @@
 {
   "extends": [
-    "github>doist/renovate-config:kotlin-base"
+    "github>doist/renovate-config:kotlin-base",
+    ":rebaseStalePrs"
   ]
 }
