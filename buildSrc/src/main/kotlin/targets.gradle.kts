@@ -8,6 +8,7 @@ import org.gradle.nativeplatform.platform.internal.DefaultOperatingSystem
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet.Companion.COMMON_MAIN_SOURCE_SET_NAME
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithSimulatorTests
 
 plugins {
     kotlin("multiplatform")
@@ -100,9 +101,11 @@ fun KotlinMultiplatformExtension.configureAppleTargets(hostOnly: Boolean = false
             add(tvosSimulatorArm64())
         }
     }
-    
+
     // https://youtrack.jetbrains.com/issue/KT-45416/Do-not-use-iPhone-8-simulator-for-Gradle-tests
-    darwinTargets.forEach { target ->
+    // TODO: Remove when Kotlin 1.8 is out.
+    val simulatorTargets = darwinTargets.filterIsInstance<KotlinNativeTargetWithSimulatorTests>()
+    simulatorTargets.forEach { target ->
         when {
             target.name.startsWith("ios") -> {
                 target.testRuns["test"].deviceId = "iPhone 14"
