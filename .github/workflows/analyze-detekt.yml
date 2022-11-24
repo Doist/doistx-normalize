@@ -24,7 +24,7 @@ jobs:
           --silent \
           --location \
           --output $JARFILE
-        echo "::set-output name=jarfile::$JARFILE"
+        echo "jarfile=$JARFILE" >> $GITHUB_OUTPUT
     - name: Run detekt
       continue-on-error: true
       run: |
