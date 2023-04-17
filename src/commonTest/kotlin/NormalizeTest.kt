@@ -7,7 +7,7 @@ import kotlin.test.assertTrue
 
 class NormalizeTest {
     @Test
-    fun testFormValues() {
+    fun formValues() {
         val forms = Form.values()
         assertEquals(4, forms.size)
         assertTrue(forms.contains(Form.NFC))
@@ -29,7 +29,7 @@ class NormalizeTest {
     }
 
     @Test
-    fun testNormalize() {
+    fun normalizeAnnex15() {
         val fixtures = arrayOf(
             // [source, nfc, nfd, nfkc, nfkd]
             arrayOf("\u00c1", "\u00c1", "\u0041\u0301", "\u00c1", "\u0041\u0301"),
@@ -56,5 +56,13 @@ class NormalizeTest {
             assertEquals(nfkc, src.normalize(Form.NFKC), "NFKC test ${i + 1}")
             assertEquals(nfkd, src.normalize(Form.NFKD), "NFKD test ${i + 1}")
         }
+    }
+
+    @Test
+    fun normalizeMaxExpansion() {
+        val a = "(ﷺ)"
+        val b = "(صلى الله عليه وسلم)"
+        assertEquals(b, a.normalize(Form.NFKD))
+        assertEquals(b.repeat(4), a.repeat(4).normalize(Form.NFKD))
     }
 }
