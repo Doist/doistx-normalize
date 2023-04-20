@@ -65,4 +65,12 @@ class NormalizeTest {
         assertEquals(b, a.normalize(Form.NFKD))
         assertEquals(b.repeat(4), a.repeat(4).normalize(Form.NFKD))
     }
+
+    @Test
+    fun normalizeEmpty() {
+        assertEquals("", "".normalize(Form.NFC))
+        assertEquals("", "".normalize(Form.NFD))
+        assertEquals("", "".normalize(Form.NFKC))
+        assertEquals("", "".normalize(Form.NFKD))
+    }
 }
