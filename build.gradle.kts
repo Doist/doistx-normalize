@@ -5,6 +5,7 @@ plugins {
     id("targets")
     id("cinterop")
     id("publish")
+    id("com.goncalossilva.resources") version "0.3.2"
 }
 
 repositories {
@@ -15,6 +16,16 @@ kotlin {
     jvmToolchain(11)
 
     explicitApi()
+
+    sourceSets {
+        @Suppress("UNUSED_VARIABLE")
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation("com.goncalossilva:resources:0.3.2")
+            }
+        }
+    }
 }
 
 tasks.withType<JavaCompile>().configureEach {
