@@ -1,6 +1,6 @@
 /*
-* Set up build and verification targets, depending on what's enabled by the "targets" property.
-*/
+ * Set up build and verification targets, depending on what's enabled by the "targets" property.
+ */
 
 import org.gradle.api.GradleException
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
