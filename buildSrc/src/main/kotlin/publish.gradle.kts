@@ -31,7 +31,6 @@ val dokkaHtmlJavadocJar by tasks.registering(Jar::class) {
 // Setup publishing environment.
 publishing {
     // Configure all publications.
-    @Suppress("LocalVariableName")
     publications.withType<MavenPublication> {
         val pomDescription: String by project
         val pomUrl: String by project
