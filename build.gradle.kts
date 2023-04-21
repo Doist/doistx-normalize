@@ -12,6 +12,8 @@ repositories {
 }
 
 kotlin {
+    jvmToolchain(11)
+
     explicitApi()
 }
 
@@ -21,7 +23,6 @@ tasks.withType<JavaCompile>().configureEach {
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions {
-        jvmTarget = "1.8"
         freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.contracts.ExperimentalContracts"
     }
 }
