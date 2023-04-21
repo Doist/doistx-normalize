@@ -14,8 +14,7 @@ jobs:
     strategy:
       matrix:
         include:
-          # Newer versions rely on glibc 2.32/2.34, while Kotlin/Native uses 2.19.
-          - os: ubuntu-20.04
+          - os: ubuntu-latest
             targets: all
           - os: macos-latest
             targets: native
