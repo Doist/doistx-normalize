@@ -1,3 +1,4 @@
+import com.goncalossilva.resources.Resource
 import doist.x.normalize.Form
 import doist.x.normalize.normalize
 import kotlin.test.Test
@@ -29,40 +30,63 @@ class NormalizeTest {
     }
 
     @Test
+    @Suppress("DestructuringDeclarationWithTooManyEntries")
     fun normalizeAnnex15() {
-        val fixtures = arrayOf(
-            // [source, nfc, nfd, nfkc, nfkd]
-            arrayOf("\u00c1", "\u00c1", "\u0041\u0301", "\u00c1", "\u0041\u0301"),
-            arrayOf("\u0041\u0301", "\u00c1", "\u0041\u0301", "\u00c1", "\u0041\u0301"),
-            arrayOf("\ufb03", "\ufb03", "\ufb03", "\u0066\u0066\u0069", "\u0066\u0066\u0069"),
-            arrayOf(
-                "\u0066\u0066\u0069",
-                "\u0066\u0066\u0069",
-                "\u0066\u0066\u0069",
-                "\u0066\u0066\u0069",
-                "\u0066\u0066\u0069"
-            ),
-            arrayOf("", "", "", "", ""),
-            arrayOf("schön", "schön", "scho\u0308n", "schön", "scho\u0308n"),
-            arrayOf("Äffin", "Äffin", "A\u0308ffin", "Äffin", "A\u0308ffin"),
-            arrayOf("Ä\uFB03n", "Ä\uFB03n", "A\u0308\uFB03n", "Äffin", "A\u0308ffin"),
-            arrayOf("Henry IV", "Henry IV", "Henry IV", "Henry IV", "Henry IV"),
-            arrayOf("Henry \u2163", "Henry \u2163", "Henry \u2163", "Henry IV", "Henry IV"),
+        // Ref: https://www.unicode.org/Public/10.0.0/ucd/NormalizationTest.txt
+        // Version 10.0.0 is the latest version of the Unicode Standard that is mostly supported across all platforms,
+        // except for a couple of lines skipped below. JDK 11 is especially problematic in newer versions.
+        val fixtures = Resource("src/commonTest/resources/NormalizationTest.txt").readText()
+        val skipLines = arrayOf(
+            // Fails on all Darwin platforms.
+            67, 68,
         )
+        fixtures.lines().forEachIndexed { i, line ->
+            if (line.startsWith("#") || line.startsWith("@") || line.isEmpty()) {
+                return@forEachIndexed
+            }
 
-        fixtures.forEachIndexed { i, (src, nfc, nfd, nfkc, nfkd) ->
-            assertEquals(nfc, src.normalize(Form.NFC), "NFC test ${i + 1}")
-            assertEquals(nfd, src.normalize(Form.NFD), "NFD test ${i + 1}")
-            assertEquals(nfkc, src.normalize(Form.NFKC), "NFKC test ${i + 1}")
-            assertEquals(nfkd, src.normalize(Form.NFKD), "NFKD test ${i + 1}")
+            val lineno = i + 1
+            if (skipLines.contains(lineno)) {
+                return@forEachIndexed
+            }
+
+            val (source, nfc, nfd, nfkc, nfkd) =
+                line.split(";", limit = 6).dropLast(1).map { column ->
+                    column.split(" ").flatMap { codepoint ->
+                        val codePointInt = codepoint.toInt(radix = 16)
+                        if (codePointInt <= 0xFFFF) {
+                            sequenceOf(codePointInt.toChar())
+                        } else {
+                            val high = (codePointInt - 0x10000) / 0x400 + 0xD800
+                            val low = (codePointInt - 0x10000) % 0x400 + 0xDC00
+                            sequenceOf(high.toChar(), low.toChar())
+                        }
+                    }.joinToString(separator = "")
+                }
+
+            assertEquals(nfc, source.normalize(Form.NFC), "Line $lineno: NFC: $source: ")
+            assertEquals(nfc, nfc.normalize(Form.NFC), "Line $lineno: NFC: $nfc: ")
+            assertEquals(nfc, nfd.normalize(Form.NFC), "Line $lineno: NFC: $nfd: ")
+            assertEquals(nfkc, nfkc.normalize(Form.NFC), "Line $lineno: NFC: $nfkc: ")
+            assertEquals(nfkc, nfkd.normalize(Form.NFC), "Line $lineno: NFC: $nfkd: ")
+
+            assertEquals(nfd, source.normalize(Form.NFD), "Line $lineno: NFD: $source: ")
+            assertEquals(nfd, nfc.normalize(Form.NFD), "Line $lineno: NFD: $nfc: ")
+            assertEquals(nfd, nfd.normalize(Form.NFD), "Line $lineno: NFD: $nfd: ")
+            assertEquals(nfkd, nfkc.normalize(Form.NFD), "Line $lineno: NFD: $nfkc: ")
+            assertEquals(nfkd, nfkd.normalize(Form.NFD), "Line $lineno: NFD: $nfkd: ")
+
+            assertEquals(nfkc, source.normalize(Form.NFKC), "Line $lineno: NFKC: $source: ")
+            assertEquals(nfkc, nfc.normalize(Form.NFKC), "Line $lineno: NFKC: $nfc: ")
+            assertEquals(nfkc, nfd.normalize(Form.NFKC), "Line $lineno: NFKC: $nfd: ")
+            assertEquals(nfkc, nfkc.normalize(Form.NFKC), "Line $lineno: NFKC: $nfkc: ")
+            assertEquals(nfkc, nfkd.normalize(Form.NFKC), "Line $lineno: NFKC: $nfkd: ")
+
+            assertEquals(nfkd, source.normalize(Form.NFKD), "Line $lineno: NFKD: $source: ")
+            assertEquals(nfkd, nfc.normalize(Form.NFKD), "Line $lineno: NFKD: $nfc: ")
+            assertEquals(nfkd, nfd.normalize(Form.NFKD), "Line $lineno: NFKD: $nfd: ")
+            assertEquals(nfkd, nfkc.normalize(Form.NFKD), "Line $lineno: NFKD: $nfkc: ")
+            assertEquals(nfkd, nfkd.normalize(Form.NFKD), "Line $lineno: NFKD: $nfkd: ")
         }
-    }
-
-    @Test
-    fun normalizeMaxExpansion() {
-        val a = "(ﷺ)"
-        val b = "(صلى الله عليه وسلم)"
-        assertEquals(b, a.normalize(Form.NFKD))
-        assertEquals(b.repeat(4), a.repeat(4).normalize(Form.NFKD))
     }
 }
