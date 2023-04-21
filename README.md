@@ -53,11 +53,10 @@ kotlin {
 
 ## Development
 
-Building KMP projects can be tricky, as cross-compilation is not widely supported. In this case:
+Building this project can be tricky, as cross-compilation in KMP not widely supported. In this case:
 - macOS and iOS targets must be built on macOS.
-- Windows targets should be built on Windows.
-  - Alternatively, IntelliJ IDEA 2021.1 + AdoptOpenJDK 8u292-b10 have been shown to work under recent versions of Wine.
-- Linux targets can be cross-compiled, but note that `libunistring` is a dependency, and it is not installed on macOS/Windows by default.
+- Windows targets should be built on Windows (or a JDK under [Wine](https://www.winehq.org/)).
+- Linux targets must be built on Linux due depending on `libunistring`.
 - JVM/Android and JS targets can be cross-compiled.
 
 The defaults can be adjusted using two [project properties](https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties):
