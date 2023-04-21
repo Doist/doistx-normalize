@@ -4,12 +4,18 @@ All notable changes are documented in this file. The format follows [Keep a Chan
 
 ## [Unreleased]
 
+## [1.0.5] - 2023-04-22
+
+### Fixed
+
+- Fix normalization being truncated on Windows in some cases
+
 ## [1.0.4] - 2021-12-13
 
 ### Added
 
 - Support for macOS ARM 64-bit
-- Support for targetting Apple simulators on macOS ARM 64-bit 
+- Support for targeting Apple simulators on macOS ARM 64-bit 
 
 ## [1.0.3] - 2021-07-22
 
