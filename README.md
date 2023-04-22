@@ -60,7 +60,7 @@ Building this project can be tricky, as cross-compilation in KMP not widely supp
 - JVM/Android and JS targets can be cross-compiled.
 
 The defaults can be adjusted using two [project properties](https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties):
-- `targets` is a string that dictates what targets to build, test, or publish, depending on the Gradle task that runs.
+- `targets` is a string for which targets to build, test, or publish, depending on the task that runs.
    - `all` (default): All possible targets in the current host.
    - `native`: Native targets only (e.g., on macOS, that's macOS, iOS, watchOS and tvOS).
    - `common`: Common targets only (e.g., JVM, JS, Wasm).
