@@ -22,6 +22,12 @@ plugins {
 group = "com.doist.x"
 version = property("version") as String
 
+// TODO: Remove when https://youtrack.jetbrains.com/issue/KT-46466 is fixed.
+val signingTasks = tasks.withType<Sign>()
+tasks.withType<AbstractPublishToMaven>().configureEach {
+    dependsOn(signingTasks)
+}
+
 val dokkaHtmlJavadocJar by tasks.registering(Jar::class) {
     dependsOn(tasks.dokkaHtml)
     from(tasks.dokkaHtml.flatMap { it.outputDirectory })
