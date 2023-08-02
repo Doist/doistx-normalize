@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -34,6 +37,13 @@ kotlin {
 
 tasks.withType<JavaCompile>().configureEach {
     options.release.set(8)
+}
+
+rootProject.plugins.withType(YarnPlugin::class.java) {
+    rootProject.configure<YarnRootExtension> {
+        yarnLockMismatchReport = YarnLockMismatchReport.WARNING
+        yarnLockAutoReplace = true
+    }
 }
 
 // Sanity check before attempting to publish root target without having all targets enabled.
