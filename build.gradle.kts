@@ -36,12 +36,6 @@ tasks.withType<JavaCompile>().configureEach {
     options.release.set(8)
 }
 
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.contracts.ExperimentalContracts"
-    }
-}
-
 // Sanity check before attempting to publish root target without having all targets enabled.
 tasks.matching { it.name.startsWith("publishKotlinMultiplatform") }.configureEach {
     doFirst {
