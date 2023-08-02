@@ -18,6 +18,10 @@ kotlin {
     explicitApi()
 
     sourceSets {
+        all {
+            languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
+        }
+
         @Suppress("UNUSED_VARIABLE")
         val commonTest by getting {
             dependencies {
