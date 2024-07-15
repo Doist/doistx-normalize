@@ -29,7 +29,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation("com.goncalossilva:resources:0.4.2")
+                implementation("com.goncalossilva:resources:0.9.0")
             }
         }
     }
