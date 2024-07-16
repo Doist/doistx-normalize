@@ -4,6 +4,12 @@ All notable changes are documented in this file. The format follows [Keep a Chan
 
 ## [Unreleased]
 
+## [1.1.1] - 2024-07-16
+
+### Fixed
+
+- Ensure root publication is aware of all targets
+
 ## [1.1.0] - 2024-07-16
 
 > [!IMPORTANT]
