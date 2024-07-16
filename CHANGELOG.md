@@ -4,6 +4,16 @@ All notable changes are documented in this file. The format follows [Keep a Chan
 
 ## [Unreleased]
 
+## [1.1.0] - 2024-07-16
+
+> [!IMPORTANT]
+> Version 1.1.0 and higher target Kotlin 2.0 are incompatible with Kotlin 1.9.
+> Stick to version 1.0.5 if you still target Kotlin 1.9.
+
+### Added
+
+- Support for Kotlin 2.0
+
 ## [1.0.5] - 2023-04-22
 
 ### Fixed
