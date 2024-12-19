@@ -7,7 +7,7 @@ plugins {
     id("targets")
     id("cinterop")
     id("publish")
-    id("com.goncalossilva.resources") version "0.9.0"
+    id("com.goncalossilva.resources") version "0.10.0"
 }
 
 repositories {
@@ -27,7 +27,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation("com.goncalossilva:resources:0.9.0")
+                implementation("com.goncalossilva:resources:0.10.0")
             }
         }
     }
