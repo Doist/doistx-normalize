@@ -10,10 +10,8 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.`maven-publish`
 import org.gradle.kotlin.dsl.signing
-import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
-    id("org.jetbrains.dokka")
     `maven-publish`
     signing
     id("io.github.gradle-nexus.publish-plugin")
@@ -28,9 +26,7 @@ tasks.withType<AbstractPublishToMaven>().configureEach {
     dependsOn(signingTasks)
 }
 
-val dokkaHtmlJavadocJar by tasks.registering(Jar::class) {
-    dependsOn(tasks.dokkaHtml)
-    from(tasks.dokkaHtml.flatMap { it.outputDirectory })
+val javadocJar by tasks.registering(Jar::class) {
     archiveClassifier.set("javadoc")
 }
 
@@ -49,7 +45,7 @@ publishing {
         val pomDeveloperName: String by project
 
         // Publish docs with each artifact.
-        artifact(dokkaHtmlJavadocJar)
+        artifact(javadocJar)
 
         // Provide information requited by Maven Central.
         pom {
