@@ -20,7 +20,7 @@ jobs:
       run: |
         JARFILE="$(mktemp -d)/detekt.jar"
         curl --request GET \
-          --url https://github.com/detekt/detekt/releases/download/v1.17.1/detekt-cli-1.17.1-all.jar \
+          --url https://github.com/detekt/detekt/releases/download/v1.23.7/detekt-cli-1.23.7-all.jar \
           --silent \
           --location \
           --output $JARFILE
