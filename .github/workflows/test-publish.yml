@@ -32,6 +32,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libunistring-dev libc6-dev-i386
         if: runner.os == 'Linux'
+      - run: |
+          # Avoid "No usable sandbox" errors on Ubuntu, based on the instructions found here:
+          # https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md
+          echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
+        if: runner.os == 'Linux'
       - run: ./gradlew assemble check
         env:
           ORG_GRADLE_PROJECT_targets: ${{ matrix.targets }}
