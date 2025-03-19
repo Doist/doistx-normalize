@@ -1,10 +1,11 @@
-import com.goncalossilva.resources.Resource
 import doist.x.normalize.Form
 import doist.x.normalize.normalize
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
 import kotlin.test.assertTrue
+
+expect fun loadTestData(): String
 
 class NormalizeTest {
     @Test
@@ -35,7 +36,7 @@ class NormalizeTest {
         // Ref: https://www.unicode.org/Public/10.0.0/ucd/NormalizationTest.txt
         // Version 10.0.0 is the latest version of the Unicode Standard that is mostly supported across all platforms,
         // except for a couple of lines skipped below. JDK 11 is especially problematic in newer versions.
-        val fixtures = Resource("src/commonTest/resources/NormalizationTest.txt").readText()
+        val fixtures = loadTestData()
         val skipLines = arrayOf(
             // Fails on all Darwin platforms.
             67, 68,

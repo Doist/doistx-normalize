@@ -5,6 +5,7 @@
 import org.gradle.api.GradleException
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 import org.gradle.nativeplatform.platform.internal.DefaultOperatingSystem
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet.Companion.COMMON_MAIN_SOURCE_SET_NAME
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
@@ -14,6 +15,8 @@ plugins {
 }
 
 kotlin {
+    applyDefaultHierarchyTemplate()
+
     val enabledTargets = (property("targets") as String).split(",")
     enabledTargets.forEach { enabledTarget ->
         when (enabledTarget) {
@@ -61,7 +64,23 @@ fun KotlinMultiplatformExtension.configureCommonTargets() {
         }
     }
 
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+        nodejs()
+    }
+
     sourceSets {
+        val webMain by creating {
+            dependsOn(commonMain.get())
+        }
+        jsMain {
+            dependsOn(webMain)
+        }
+        wasmJsMain {
+            dependsOn(webMain)
+        }
+
         @Suppress("UNUSED_VARIABLE")
         val jvmTest by getting {
             dependencies {

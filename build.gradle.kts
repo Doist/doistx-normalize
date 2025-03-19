@@ -27,9 +27,19 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+            }
+        }
+
+        val nonWasmTest by creating {
+            dependsOn(commonTest)
+            dependencies {
                 implementation("com.goncalossilva:resources:0.10.0")
             }
         }
+
+        jvmTest { dependsOn(nonWasmTest) }
+        jsTest { dependsOn(nonWasmTest) }
+        nativeTest { dependsOn(nonWasmTest) }
     }
 }
 
