@@ -4,6 +4,12 @@ All notable changes are documented in this file. The format follows [Keep a Chan
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-03-20
+
+### Added
+
+- Support for Wasm - thanks @zsmb13!
+
 ## [1.1.1] - 2024-07-16
 
 ### Fixed
@@ -31,7 +37,7 @@ All notable changes are documented in this file. The format follows [Keep a Chan
 ### Added
 
 - Support for macOS ARM 64-bit
-- Support for targeting Apple simulators on macOS ARM 64-bit 
+- Support for targeting Apple simulators on macOS ARM 64-bit
 
 ## [1.0.3] - 2021-07-22
 
