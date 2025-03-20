@@ -5,8 +5,8 @@
 import org.gradle.api.GradleException
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 import org.gradle.nativeplatform.platform.internal.DefaultOperatingSystem
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet.Companion.COMMON_MAIN_SOURCE_SET_NAME
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
@@ -14,6 +14,8 @@ plugins {
 }
 
 kotlin {
+    applyDefaultHierarchyTemplate()
+
     val enabledTargets = (property("targets") as String).split(",")
     enabledTargets.forEach { enabledTarget ->
         when (enabledTarget) {
@@ -61,52 +63,49 @@ fun KotlinMultiplatformExtension.configureCommonTargets() {
         }
     }
 
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+        nodejs()
+    }
+
     sourceSets {
-        @Suppress("UNUSED_VARIABLE")
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-            }
+        val webMain by creating {
+            dependsOn(commonMain.get())
+        }
+        jsMain {
+            dependsOn(webMain)
+        }
+        wasmJsMain {
+            dependsOn(webMain)
         }
 
-        @Suppress("UNUSED_VARIABLE")
-        val jsTest by getting {
-            dependencies {
-                implementation(kotlin("test-js"))
-            }
+        jvmTest.dependencies {
+            implementation(kotlin("test-junit"))
+        }
+        jsTest.dependencies {
+            implementation(kotlin("test-js"))
         }
     }
 }
 
 fun KotlinMultiplatformExtension.configureAppleTargets(hostOnly: Boolean = false) {
-    val darwinTargets = mutableListOf<KotlinNativeTarget>(
-        macosX64(),
-        macosArm64()
-    )
+    macosX64()
+    macosArm64()
 
     if (!hostOnly) {
-        darwinTargets.apply {
-            add(iosX64())
-            add(iosArm64())
-            add(iosSimulatorArm64())
+        iosX64()
+        iosArm64()
+        iosSimulatorArm64()
 
-            add(watchosX64())
-            add(watchosArm32())
-            add(watchosArm64())
-            add(watchosSimulatorArm64())
+        watchosX64()
+        watchosArm32()
+        watchosArm64()
+        watchosSimulatorArm64()
 
-            add(tvosX64())
-            add(tvosArm64())
-            add(tvosSimulatorArm64())
-        }
-    }
-
-    sourceSets {
-        val darwinMain by creating { dependsOn(getByName(COMMON_MAIN_SOURCE_SET_NAME)) }
-
-        darwinTargets.forEach { darwinTarget ->
-            getByName("${darwinTarget.name}Main") { dependsOn(darwinMain) }
-        }
+        tvosX64()
+        tvosArm64()
+        tvosSimulatorArm64()
     }
 }
 
@@ -129,14 +128,6 @@ fun KotlinMultiplatformExtension.configureLinuxTargets(hostOnly: Boolean = false
         linuxTarget.compilations.getByName("main") {
             @Suppress("UNUSED_VARIABLE")
             val uninorm by cinterops.creating
-        }
-    }
-
-    sourceSets {
-        val linuxMain by creating { dependsOn(getByName(COMMON_MAIN_SOURCE_SET_NAME)) }
-
-        linuxTargets.forEach { linuxTarget ->
-            getByName("${linuxTarget.name}Main") { dependsOn(linuxMain) }
         }
     }
 }
