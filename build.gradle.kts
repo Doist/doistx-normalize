@@ -1,6 +1,7 @@
+import org.gradle.kotlin.dsl.the
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
-import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
+import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootEnvSpec
 
 plugins {
     kotlin("multiplatform")
@@ -43,8 +44,8 @@ kotlin {
     }
 }
 
-rootProject.plugins.withType(YarnPlugin::class.java) {
-    rootProject.configure<YarnRootExtension> {
+plugins.withType<YarnPlugin> {
+    the<YarnRootEnvSpec>().apply {
         yarnLockMismatchReport = YarnLockMismatchReport.WARNING
         yarnLockAutoReplace = true
     }
