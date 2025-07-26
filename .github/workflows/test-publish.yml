@@ -76,8 +76,6 @@ jobs:
           ORG_GRADLE_PROJECT_version: ${{ steps.get_tag_version.outputs.VERSION }}
           ORG_GRADLE_PROJECT_targets: ${{ matrix.targets }}
           ORG_GRADLE_PROJECT_publishRootTarget: ${{ matrix.publishRootTarget }}
-          ORG_GRADLE_PROJECT_ossrhUsername: ${{ secrets.OSSRH_USERNAME }}
-          ORG_GRADLE_PROJECT_ossrhPassword: ${{ secrets.OSSRH_PASSWORD }}
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_SECRET_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
         shell: bash
