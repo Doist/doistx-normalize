@@ -70,16 +70,6 @@ fun KotlinMultiplatformExtension.configureCommonTargets() {
     }
 
     sourceSets {
-        val webMain by creating {
-            dependsOn(commonMain.get())
-        }
-        jsMain {
-            dependsOn(webMain)
-        }
-        wasmJsMain {
-            dependsOn(webMain)
-        }
-
         jvmTest.dependencies {
             implementation(kotlin("test-junit"))
         }
