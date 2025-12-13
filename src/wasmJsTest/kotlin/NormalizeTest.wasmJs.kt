@@ -1,5 +1,5 @@
 
 actual fun loadTestData(): String {
-    // TODO load data from src/commonTest/resources/NormalizationTest.txt instead
+    // TODO load data from NormalizationTest.txt instead
     return testDataString
 }
