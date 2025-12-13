@@ -91,6 +91,7 @@ fun KotlinMultiplatformExtension.configureAppleTargets(hostOnly: Boolean = false
         watchosX64()
         watchosArm32()
         watchosArm64()
+        watchosDeviceArm64()
         watchosSimulatorArm64()
 
         tvosX64()
