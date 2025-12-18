@@ -1,3 +1,4 @@
+import com.goncalossilva.resources.Resource
 import doist.x.normalize.Form
 import doist.x.normalize.normalize
 import kotlin.test.Test
@@ -5,7 +6,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFails
 import kotlin.test.assertTrue
 
-expect fun loadTestData(): String
+fun loadTestData(): String = Resource("NormalizationTest.txt").readText()
 
 class NormalizeTest {
     @Test

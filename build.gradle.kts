@@ -8,7 +8,7 @@ plugins {
     id("targets")
     id("cinterop")
     id("publish")
-    id("com.goncalossilva.resources") version "0.11.0"
+    id("com.goncalossilva.resources") version "0.13.0"
 }
 
 repositories {
@@ -28,19 +28,9 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation("com.goncalossilva:resources:0.13.0")
             }
         }
-
-        val nonWasmTest by creating {
-            dependsOn(commonTest)
-            dependencies {
-                implementation("com.goncalossilva:resources:0.11.0")
-            }
-        }
-
-        jvmTest { dependsOn(nonWasmTest) }
-        jsTest { dependsOn(nonWasmTest) }
-        nativeTest { dependsOn(nonWasmTest) }
     }
 }
 
