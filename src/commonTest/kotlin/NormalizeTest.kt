@@ -20,7 +20,7 @@ class NormalizeTest {
     }
 
     @Test
-    fun testFormValueOf() {
+    fun formValueOf() {
         assertEquals(Form.NFC, Form.valueOf("NFC"))
         assertEquals(Form.NFD, Form.valueOf("NFD"))
         assertEquals(Form.NFKC, Form.valueOf("NFKC"))
@@ -29,6 +29,24 @@ class NormalizeTest {
         assertFails { Form.valueOf("nope") }
         assertFails { Form.valueOf("nfc") }
         assertFails { Form.valueOf("NFC ") }
+    }
+
+    @Test
+    fun preserveNullCharacter() {
+        val input = "test\u0000suffix"
+        assertEquals(input, input.normalize(Form.NFC))
+        assertEquals(input, input.normalize(Form.NFD))
+        assertEquals(input, input.normalize(Form.NFKC))
+        assertEquals(input, input.normalize(Form.NFKD))
+    }
+
+    @Test
+    fun preserveTrailingNullCharacter() {
+        val input = "test\u0000"
+        assertEquals(input, input.normalize(Form.NFC))
+        assertEquals(input, input.normalize(Form.NFD))
+        assertEquals(input, input.normalize(Form.NFKC))
+        assertEquals(input, input.normalize(Form.NFKD))
     }
 
     @Test
