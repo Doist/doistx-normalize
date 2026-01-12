@@ -4,6 +4,13 @@ All notable changes are documented in this file. The format follows [Keep a Chan
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-01-12
+
+### Fixed
+
+- Preserve NUL characters in native normalization
+- Free libunistring output to avoid memory leaks
+
 ## [1.3.0] - 2025-12-13
 
 ### Added
