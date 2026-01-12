@@ -53,10 +53,10 @@ kotlin {
 
 ## Development
 
-Building this project can be tricky, as cross-compilation in KMP not widely supported. In this case:
-- macOS and iOS targets must be built on macOS.
-- Windows targets should be built on Windows (or a JDK under [Wine](https://www.winehq.org/)).
-- Linux targets must be built on Linux due depending on `libunistring`.
+Building this project can be tricky. Kotlin/Native supports cross-compilation (so `.klib` artifacts can be produced on any host), but keep in mind:
+
+- macOS is required to run tests on Apple platforms.
+- Linux targets must be built on Linux due to depending on `libunistring`.
 - JVM/Android and JS targets can be cross-compiled.
 
 The defaults can be adjusted using two [project properties](https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties):
@@ -67,7 +67,7 @@ The defaults can be adjusted using two [project properties](https://docs.gradle.
    - `host`: Host OS only.
 - `publishRootTarget` is a boolean that indicates whether the [`kotlinMultiplatform` root publication](https://kotlinlang.org/docs/mpp-publish-lib.html#structure-of-publications) is included when publishing enabled targets (can only be done once).
 
-When targets are built, tested and published in CI/CD, the Apple host handles Apple-specific targets, the Windows host handles Windows, and Linux handles everything else.
+In CI/CD, tests run on Linux, macOS, and Windows, while publishing happens from Linux.
 
 ## Release
 

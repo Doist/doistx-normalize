@@ -44,8 +44,15 @@ plugins.withType<YarnPlugin> {
 // Sanity check before attempting to publish root target without having all targets enabled.
 tasks.matching { it.name.startsWith("publishKotlinMultiplatform") }.configureEach {
     doFirst {
-        require(findProperty("targets") == "all") {
-            "Configuration is set to publish root target without all targets enabled."
+        val enabledTargets = findProperty("targets")
+            ?.toString()
+            ?.split(",")
+            ?.map(String::trim)
+            ?.filter(String::isNotEmpty)
+            .orEmpty()
+
+        require(enabledTargets.contains("all")) {
+            "Configuration is set to publish root target without 'all' targets enabled."
         }
     }
 }

@@ -41,21 +41,8 @@ jobs:
   publish:
     needs: test
     if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     timeout-minutes: 30
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            targets: native,common
-            publishRootTarget: true
-          - os: macos-latest
-            targets: native
-            publishRootTarget: false
-          - os: windows-latest
-            targets: native
-            publishRootTarget: false
-      fail-fast: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v3
@@ -66,12 +53,11 @@ jobs:
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
         shell: bash
       - run: sudo apt-get install -y libunistring-dev libc6-dev-i386
-        if: runner.os == 'Linux'
       - run: ./gradlew assemble publishToSonatype closeAndReleaseSonatypeStagingRepository
         env:
           ORG_GRADLE_PROJECT_version: ${{ steps.get_tag_version.outputs.VERSION }}
-          ORG_GRADLE_PROJECT_targets: ${{ matrix.targets }}
-          ORG_GRADLE_PROJECT_publishRootTarget: ${{ matrix.publishRootTarget }}
+          ORG_GRADLE_PROJECT_targets: all
+          ORG_GRADLE_PROJECT_publishRootTarget: true
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_SECRET_KEY }}
