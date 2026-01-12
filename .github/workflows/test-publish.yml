@@ -51,7 +51,7 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            targets: all
+            targets: native,common
             publishRootTarget: true
           - os: macos-latest
             targets: native
