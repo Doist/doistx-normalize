@@ -4,6 +4,12 @@ All notable changes are documented in this file. The format follows [Keep a Chan
 
 ## [Unreleased]
 
+## [1.3.3] - 2026-01-12
+
+### Changed
+
+- Publish all targets from Linux
+
 ## [1.3.2] - 2026-01-12
 
 ### Changed
