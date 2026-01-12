@@ -4,6 +4,12 @@ All notable changes are documented in this file. The format follows [Keep a Chan
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-01-12
+
+### Changed
+
+- Build and publish mingw target on Windows
+
 ## [1.3.1] - 2026-01-12
 
 ### Fixed
