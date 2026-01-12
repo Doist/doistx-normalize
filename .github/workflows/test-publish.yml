@@ -26,11 +26,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - run: |
-          # azure.archive.ubuntu.com is flaky
-          sudo sed -i 's/azure.archive.ubuntu.com/archive.ubuntu.com/' /etc/apt/sources.list
-          sudo apt-get update
-          sudo apt-get install -y libunistring-dev libc6-dev-i386
+      - run: sudo apt-get install -y libunistring-dev libc6-dev-i386
         if: runner.os == 'Linux'
       - run: |
           # Avoid "No usable sandbox" errors on Ubuntu, based on the instructions found here:
