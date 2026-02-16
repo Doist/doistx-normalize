@@ -8,7 +8,7 @@ plugins {
     id("targets")
     id("cinterop")
     id("publish")
-    id("com.goncalossilva.resources") version "0.14.4"
+    id("com.goncalossilva.resources") version "0.15.0"
 }
 
 repositories {
