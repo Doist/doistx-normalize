@@ -26,7 +26,9 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - run: sudo apt-get install -y libunistring-dev libc6-dev-i386
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y libunistring-dev libc6-dev-i386
         if: runner.os == 'Linux'
       - run: |
           # Avoid "No usable sandbox" errors on Ubuntu, based on the instructions found here:
@@ -52,7 +54,9 @@ jobs:
       - id: get_tag_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
         shell: bash
-      - run: sudo apt-get install -y libunistring-dev libc6-dev-i386
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y libunistring-dev libc6-dev-i386
       - run: ./gradlew assemble publishToSonatype closeAndReleaseSonatypeStagingRepository
         env:
           ORG_GRADLE_PROJECT_version: ${{ steps.get_tag_version.outputs.VERSION }}
