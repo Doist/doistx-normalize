@@ -50,6 +50,37 @@ class NormalizeTest {
     }
 
     @Test
+    fun preserveEmptyString() {
+        assertEquals("", "".normalize(Form.NFC))
+        assertEquals("", "".normalize(Form.NFD))
+        assertEquals("", "".normalize(Form.NFKC))
+        assertEquals("", "".normalize(Form.NFKD))
+    }
+
+    @Test
+    fun normalizeLargeExpandingInputs() {
+        val composed = "\u00E9".repeat(16384)
+        val decomposed = "e\u0301".repeat(16384)
+        assertEquals(composed, decomposed.normalize(Form.NFC))
+        assertEquals(decomposed, composed.normalize(Form.NFD))
+        assertEquals(composed, decomposed.normalize(Form.NFKC))
+        assertEquals(decomposed, composed.normalize(Form.NFKD))
+
+        val greek = "\u1F82".repeat(2048)
+        val greekDecomposed = "\u03B1\u0313\u0300\u0345".repeat(2048)
+        assertEquals(greek, greekDecomposed.normalize(Form.NFC))
+        assertEquals(greekDecomposed, greek.normalize(Form.NFD))
+
+        val ligature = "\uFDFA".repeat(1024)
+        val expansion = "\u0635\u0644\u0649 \u0627\u0644\u0644\u0647 \u0639\u0644\u064A\u0647 \u0648\u0633\u0644\u0645"
+        val ligatureExpanded = expansion.repeat(1024)
+        assertEquals(ligature, ligature.normalize(Form.NFC))
+        assertEquals(ligature, ligature.normalize(Form.NFD))
+        assertEquals(ligatureExpanded, ligature.normalize(Form.NFKC))
+        assertEquals(ligatureExpanded, ligature.normalize(Form.NFKD))
+    }
+
+    @Test
     @Suppress("DestructuringDeclarationWithTooManyEntries")
     fun normalizeAnnex15() {
         // Ref: https://www.unicode.org/Public/10.0.0/ucd/NormalizationTest.txt

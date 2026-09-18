@@ -51,6 +51,8 @@ kotlin {
 }
 ```
 
+Linux targets link against the system `libunistring`, which must be version 0.9.7 or newer.
+
 ## Development
 
 Building this project can be tricky. Kotlin/Native supports cross-compilation (so `.klib` artifacts can be produced on any host), but keep in mind:
