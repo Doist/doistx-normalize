@@ -6,6 +6,10 @@ All notable changes are documented in this file. The format follows [Keep a Chan
 
 ### Changed
 
+## [1.4.0] - 2026-09-23
+
+### Changed
+
 - Reduce Linux normalization overhead by normalizing UTF-16 directly
 - Require `libunistring` 0.9.7 or newer on Linux
 
